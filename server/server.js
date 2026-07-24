@@ -180,6 +180,9 @@ app.post('/admin/delete/:id', async (req, res) => {
 });
 
 // ===== Pages (HTML builders) =====
+// ===== HEALTHCHECK (Railway / load balancers) =====
+app.get('/health', (req, res) => res.json({ ok: true, time: new Date().toISOString() }));
+
 function loginPage(err) {
   return `<!doctype html><meta charset=utf-8><title>Admin Login</title>
   <body style="background:#000;color:#fff;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0">

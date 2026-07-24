@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-POP Dream Team Audition</title>
+    <style>
+        :root {
+            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --red-primary: #e60012;
+            --red-dark: #b8000e;
+            --black: #111111;
+            --gray-dark: #333333;
+            --gray-medium: #666666;
+            --gray-light: #f5f5f5;
+            --white: #ffffff;
+            --border: #e0e0e0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-sans); color: var(--black); line-height: 1.6; }
+        a { color: var(--red-primary); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--red-primary) 0%, var(--red-dark) 100%);
+            color: var(--white);
+            padding: 60px 20px 40px;
+            text-align: center;
+        }
+        header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        header p { font-size: 1.2rem; opacity: 0.95; max-width: 600px; margin: 0 auto; }
+
+        nav {
+            background: var(--black);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        nav ul {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+        nav a { color: var(--white); font-weight: 500; font-size: 0.95rem; }
+
+        /* Sections */
+        section { padding: 60px 20px; max-width: 1000px; margin: 0 auto; }
+        section:nth-child(even) { background: var(--gray-light); }
+        h2 { font-size: 2rem; margin-bottom: 20px; color: var(--black); text-align: center; }
+
+        /* About Section */
+        .about-content {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .about-content p { margin-bottom: 15px; font-size: 1.1rem; }
+
+        /* Encouraging Banner */
+        .encourage-banner {
+            background: var(--red-primary);
+            color: var(--white);
+            padding: 40px 20px;
+            text-align: center;
+            margin: 40px 0;
+            border-radius: 10px;
+        }
+        .encourage-banner h3 { font-size: 1.8rem; margin-bottom: 10px; }
+
+        /* Application Form */
+        .application-form {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .form-group { margin-bottom: 20px; }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--gray-dark);
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--red-primary);
+        }
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 8px;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .checkbox-item input { width: auto; }
+        .checkbox-item label { margin: 0; font-weight: normal; }
+
+        .file-upload {
+            border: 2px dashed var(--border);
+            border-radius: 6px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+        .file-upload:hover { border-color: var(--red-primary); }
+        .file-upload input { display: none; }
+
+        .submit-btn {
+            background: var(--red-primary);
+            color: var(--white);
+            padding: 15px 30px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s;
+        }
+        .submit-btn:hover { background: var(--red-dark); }
+
+        /* Contact Section */
+        .contact-info {
+            text-align: center;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .contact-info p { margin: 10px 0; }
+
+        /* Privacy Policy */
+        .privacy-content {
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 0.95rem;
+        }
+        .privacy-content h3 { margin: 20px 0 10px; }
+
+        /* Footer */
+        footer {
+            background: var(--black);
+            color: var(--white);
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            header h1 { font-size: 1.8rem; }
+            nav ul { gap: 15px; }
+            .checkbox-group { grid-template-columns: 1fr; }
+            .application-form { padding: 25px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>✨ K-POP Dream Team Audition ✨</h1>
+        <p>Your chance to become the next global K-POP sensation! Join our trainee program and showcase your talent.</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#apply">Apply Now</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="#privacy">Privacy Policy</a></li>
+        </ul>
+    </nav>
+
+    <section id="about">
+        <h2>Who We Are</h2>
+        <div class="about-content">
+            <p>K-POP Dream Team is a premier entertainment company dedicated to discovering and nurturing the next generation of K-POP artists. We believe talent exists everywhere, and our mission is to bring together passionate individuals who dream of performing on the world stage.</p>
+            <p>We offer comprehensive training in vocals, rap, dance, visuals, and music production. Our experienced team of industry professionals will guide you through every step of your journey, from audition to debut.</p>
+            <p>Join thousands of applicants worldwide who have taken their first step toward stardom with us.</p>
+        </div>
+    </section>
+
+    <div class="encourage-banner">
+        <h3>Ready to Shine?</h3>
+        <p>Don't let your dream wait — submit your audition today and let your talent be heard!</p>
+    </div>
+
+    <section id="apply">
+        <h2>Audition Application</h2>
+        <form class="application-form" id="auditionForm">
+            <div class="form-group">
+                <label for="fullname">Full Name *</label>
+                <input type="text" id="fullname" name="fullname" required>
+            </div>
+
+            <div class="form-group">
+                <label for="stagename">Stage Name *</label>
+                <input type="text" id="stagename" name="stagename" required>
+            </div>
+
+            <div class="form-group">
+                <label for="age">Age *</label>
+                <input type="number" id="age" name="age" min="12" max="30" required>
+            </div>
+
+            <div class="form-group">
+                <label for="country">Country *</label>
+                <select id="country" name="country" required>
+                    <option value="">Select your country</option>
+                    <option value="South Korea">South Korea</option>
+                    <option value="Japan">Japan</option>
+                    <option value="China">China</option>
+                    <option value="Thailand">Thailand</option>
+                    <option value="USA">United States</option>
+                    <option value="Morocco">Morocco</option>
+                    <option value="Philippines">Philippines</option>
+                    <option value="Vietnam">Vietnam</option>
+                    <option value="Indonesia">Indonesia</option>
+                    <option value="Malaysia">Malaysia</option>
+                    <option value="Brazil">Brazil</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="height">Height (cm) *</label>
+                <input type="number" id="height" name="height" min="120" max="220" required>
+            </div>
+
+            <div class="form-group">
+                <label>Social Media (WhatsApp, TikTok, or Instagram) *</label>
+                <input type="text" id="whatsapp" name="whatsapp" placeholder="Phone number or @username" required>
+            </div>
+
+            <div class="form-group">
+                <label>Position(s) You Can Apply For *</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="vocal" name="positions" value="Vocal">
+                        <label for="vocal">Vocal</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="rap" name="positions" value="Rap">
+                        <label for="rap">Rap</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="visual" name="positions" value="Visual">
+                        <label for="visual">Visual</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="producer" name="positions" value="Producer">
+                        <label for="producer">Producer</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="dance" name="positions" value="Dance">
+                        <label for="dance">Dance</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Audition Video Upload *</label>
+                <div class="file-upload" onclick="document.getElementById('video').click()">
+                    <p>📹 Click to upload your audition video</p>
+                    <p style="font-size: 0.85rem; color: var(--gray-medium);">MP4, MOV, AVI (max 100MB)</p>
+                    <input type="file" id="video" name="video" accept="video/*">
+                </div>
+                <p id="file-name" style="margin-top: 10px; font-size: 0.9rem; color: var(--gray-dark);"></p>
+            </div>
+
+            <button type="submit" class="submit-btn">Submit Audition Application</button>
+        </form>
+    </section>
+
+    <section id="contact">
+        <h2>Contact Us</h2>
+        <div class="contact-info">
+            <p>📧 Email: <a href="mailto:auditions@kpopteam.com">auditions@kppteam.com</a></p>
+            <p>📱 WhatsApp: +82 10-XXXX-XXXX</p>
+            <p>📸 Instagram: <a href="https://instagram.com/kpopteam_auditions">@kpopteam_auditions</a></p>
+            <p>🎵 TikTok: <a href="https://tiktok.com/@kpopteam">@kppteam</a></p>
+            <p>🏢 Address: Seoul, South Korea</p>
+        </div>
+    </section>
+
+    <section id="privacy">
+        <h2>Privacy Policy</h2>
+        <div class="privacy-content">
+            <h3>Information Collection</h3>
+            <p>We collect personal information including your name, age, country, and social media handles solely for the purpose of reviewing audition applications.</p>
+
+            <h3>How We Use Your Data</h3>
+            <p>Your information is used exclusively for audition evaluation and potential follow-up communication. We do not share your data with third parties without your explicit consent.</p>
+
+            <h3>Data Security</h3>
+            <p>All submissions are stored securely and accessed only by our audition review team. Videos are used solely for evaluation purposes.</p>
+
+            <h3>Your Rights</h3>
+            <p>You may request deletion of your personal data at any time by contacting us. We retain audition materials for up to 6 months after submission.</p>
+
+            <h3>Policy Updates</h3>
+            <p>We may update this policy. Continued use of our audition form indicates acceptance of any changes.</p>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 K-POP Dream Team. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // File upload display
+        document.getElementById('video').addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name || 'No file selected';
+            document.getElementById('file-name').textContent = fileName;
+        });
+
+        // Form submission
+        document.getElementById('auditionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your audition submission! Our team will review your application and contact you via your provided social media.');
+            this.reset();
+            document.getElementById('file-name').textContent = '';
+        });
+    </script>
+</body>
+</html>

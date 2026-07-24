@@ -1,0 +1,17 @@
+{
+  "build": {
+    "command": "npm install"
+  },
+  "deploy": {
+    "command": "npm start",
+    "restart": true,
+    "restartCount": 3,
+    "healthcheckPath": "/admin",
+    "sleep": 5
+  },
+  "environments": {
+    "production": {
+      "NODE_ENV": "production"
+    }
+  }
+}

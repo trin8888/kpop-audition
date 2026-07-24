@@ -104,19 +104,56 @@
 
             <div class="form-note" id="formNote">
                 <strong>Fill out the form below</strong> with your full details and upload your audition video.
-                Your submission (including the video) is sent straight to our team and saved automatically to our Google Drive.
+                Your submission (including the video) is saved securely to our database — no sign-in needed.
             </div>
 
-            <div class="gform-wrap">
-                <iframe id="gform"
-                    src="https://docs.google.com/forms/d/e/1FAIpQLSdvdJhR9b0ZxKHdh3OcenM_oRSmmAhrCOzVTI1cBclyQtAaZA/viewform?embedded=true"
-                    loading="lazy"
-                    referrerpolicy="no-referrer"
-                    sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
-                    title="K-POP Audition Application Form">
-                    Loading audition form…
-                </iframe>
-            </div>
+            <form class="application-form" id="auditionForm" action="/api/apply" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="fullname">Full Name / الاسم الكامل *</label>
+                    <input type="text" id="fullname" name="fullName" required placeholder="Enter your full name / أدخل اسمك الكامل">
+                </div>
+                <div class="form-group">
+                    <label for="stagename">Stage Name / اسم المسرح *</label>
+                    <input type="text" id="stagename" name="stageName" required placeholder="Your stage name / اسمك المسرحي">
+                </div>
+                <div class="form-group">
+                    <label for="age">Age / العمر *</label>
+                    <input type="number" id="age" name="age" min="12" max="30" required placeholder="Your age / عمرك">
+                </div>
+                <div class="form-group">
+                    <label for="country">Country / الدولة *</label>
+                    <input type="text" id="country" name="country" required placeholder="Enter your country / أدخل دولتك">
+                </div>
+                <div class="form-group">
+                    <label for="height">Height (cm) / الارتفاع (سم) *</label>
+                    <input type="number" id="height" name="height" min="120" max="220" required placeholder="Your height in cm / طولك بالسم">
+                </div>
+                <div class="form-group">
+                    <label>Social Media (WhatsApp, TikTok, or Instagram) / وسائل التواصل (واتساب، تيك توك، أو إنستغرام) *</label>
+                    <input type="text" id="whatsapp" name="social" placeholder="Phone number or @username / رقم الهاتف أو @اسم المستخدم" required>
+                </div>
+                <div class="form-group">
+                    <label>Position(s) You Can Apply For / المناصب التي يمكنك التقديم لها *</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item"><input type="checkbox" id="vocal" name="positions" value="Vocal"><label for="vocal">Vocal / غناء</label></div>
+                        <div class="checkbox-item"><input type="checkbox" id="rap" name="positions" value="Rap"><label for="rap">Rap / راب</label></div>
+                        <div class="checkbox-item"><input type="checkbox" id="visual" name="positions" value="Visual"><label for="visual">Visual / مرئي</label></div>
+                        <div class="checkbox-item"><input type="checkbox" id="producer" name="positions" value="Producer"><label for="producer">Producer / منتج</label></div>
+                        <div class="checkbox-item"><input type="checkbox" id="dance" name="positions" value="Dance"><label for="dance">Dance / رقص</label></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Audition Video Upload / رفع فيديو الاختبار *</label>
+                    <div class="file-upload" onclick="document.getElementById('video').click()">
+                        <p>📹 Click to upload your audition video</p>
+                        <p style="font-size:0.85rem;color:#aaa">MP4, MOV, AVI (max 100MB)</p>
+                        <input type="file" id="video" name="video" accept="video/*">
+                    </div>
+                    <p id="file-name" style="margin-top:12px;font-size:0.9rem;color:#aaa"></p>
+                    <p class="form-note" style="margin-top:8px">We accept MP4, MOV, and AVI formats up to 100MB in size.</p>
+                </div>
+                <button type="submit" class="submit-btn" id="submitBtn">Submit Audition Application / إرسال طلب الاختبار</button>
+            </form>
         </div>
     </section>
 
@@ -132,13 +169,13 @@
                 home: "Home", about: "About Us", apply: "Apply Now", contact: "Contact", privacy: "Privacy Policy",
                 langText: "English", langIcon: "EN",
                 pageTitle: "Audition Application / طلب الاختبار",
-                note: "<strong>Fill out the form below</strong> with your full details and upload your audition video. Your submission (including the video) is sent straight to our team and saved automatically to our Google Drive."
+                note: "<strong>Fill out the form below</strong> with your full details and upload your audition video. Your submission is saved securely to our database — no sign-in needed."
             },
             ar: {
                 home: "الرئيسية", about: "من نحن", apply: "قدم الآن", contact: "اتصل بنا", privacy: "سياسة الخصوصية",
                 langText: "العربية", langIcon: "AR",
                 pageTitle: "طلب الاختبار / Audition Application",
-                note: "<strong>املأ النموذج أدناه</strong> ببياناتك الكاملة وارفع فيديو الاختبار. يتم إرسال طلبك (بما في ذلك الفيديو) مباشرة إلى فريقنا وحفظه تلقائياً في Google Drive الخاص بنا."
+                note: "<strong>املأ النموذج أدناه</strong> ببياناتك الكاملة وارفع فيديو الاختبار. يتم حفظ طلبك بأمان في قاعدة بياناتنا — دون الحاجة إلى تسجيل الدخول."
             }
         };
         function toggleLanguage() {
@@ -161,13 +198,33 @@
             document.getElementById('formNote').innerHTML = d.note;
         }
 
-        // ---- Auto-resize the Google Form iframe (Google posts its height) ----
-        window.addEventListener('message', function (e) {
-            if (e.origin !== 'https://docs.google.com') return;
-            const msg = e.data;
-            if (msg && msg.type === 'frameResize' && msg.height) {
-                document.getElementById('gform').style.height = (msg.height + 20) + 'px';
-            }
+        // ---- File upload preview ----
+        document.getElementById('video').addEventListener('change', function (e) {
+            const name = e.target.files[0] ? e.target.files[0].name : '';
+            document.getElementById('file-name').textContent = name;
+        });
+
+        // ---- Submit: native POST to /api/apply, then show message ----
+        document.getElementById('auditionForm').addEventListener('submit', function (e) {
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.textContent = 'Submitting… / جاري الإرسال…';
+            // let the browser do the real POST; on return we show thanks
+            const done = () => {
+                const card = document.querySelector('.form-card');
+                card.innerHTML = '<h2 style="color:#0074D9">✅ ' +
+                    'Thank you! / شكرًا لك!</h2>' +
+                    '<p style="text-align:center;color:#ccc;line-height:1.8">' +
+                    'Your audition was received. Our team will review it and contact you via your social media.<br>' +
+                    'تم استلام طلبك وسيتواصل معك فريقنا عبر وسائل التواصل الاجتماعي.</p>';
+            };
+            // If the server redirects (200), we land back; detect via fetch instead:
+            e.preventDefault();
+            const fd = new FormData(this);
+            fetch('/api/apply', { method: 'POST', body: fd })
+                .then(r => r.json())
+                .then(j => { if (j.ok) done(); else alert(j.error || 'Error'); btn.disabled = false; btn.textContent = 'Submit Audition Application / إرسال طلب الاختبار'; })
+                .catch(() => { alert('Network error — please try again'); btn.disabled = false; btn.textContent = 'Submit Audition Application / إرسال طلب الاختبار'; });
         });
 
         // ---- Mark active nav link ----

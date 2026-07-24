@@ -15,17 +15,67 @@
             --border: #333333;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: var(--font-sans); background: var(--bg-black); color: var(--white); line-height: 1.6; }
-        a { color: var(--blue-accent); text-decoration: none; }
-        a:hover { text-decoration: underline; }
+        body { 
+            font-family: var(--font-sans); 
+            background: var(--bg-black); 
+            color: var(--white); 
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        a { 
+            color: var(--blue-accent); 
+            text-decoration: none; 
+            transition: color 0.3s ease;
+        }
+        a:hover { 
+            color: #0056b3; 
+            text-decoration: underline; 
+        }
         header {
             background: var(--dark-blue);
             color: var(--white);
             padding: 60px 20px 40px;
             text-align: center;
+            position: relative;
         }
-        header h1 { font-size: 2.5rem; margin-bottom: 10px; }
-        header p { font-size: 1.2rem; opacity: 0.9; max-width: 600px; margin: 0 auto; }
+        header h1 { 
+            font-size: 2.5rem; 
+            margin-bottom: 10px; 
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        header p { 
+            font-size: 1.2rem; 
+            opacity: 0.9; 
+            max-width: 600px; 
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        .language-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #111111;
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            padding: 8px 16px;
+            color: var(--white);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .language-toggle:hover {
+            background: var(--border);
+            transform: scale(1.05);
+        }
+        .language-toggle .lang-icon {
+            font-size: 1.2rem;
+        }
         nav {
             background: var(--bg-black);
             padding: 15px 20px;
@@ -41,18 +91,55 @@
             list-style: none;
             flex-wrap: wrap;
         }
-        nav a { color: var(--white); font-weight: 500; font-size: 0.95rem; }
-        section { padding: 60px 20px; max-width: 1000px; margin: 0 auto; }
-        section:nth-child(even) { background: var(--gray-light); color: var(--bg-black); }
-        h2 { font-size: 2rem; margin-bottom: 20px; color: var(--white); text-align: center; }
-        .about-content { text-align: center; max-width: 700px; margin: 0 auto; }
-        .about-content p { margin-bottom: 15px; font-size: 1.1rem; }
+        nav a { 
+            color: var(--white); 
+            font-weight: 500; 
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+        nav a:hover {
+            background: #111111;
+            color: var(--blue-accent);
+        }
+        nav a.active {
+            background: var(--blue-accent);
+            color: var(--white);
+        }
+        section { 
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+        }
+        .content-container {
+            text-align: center;
+            max-width: 800px;
+            padding: 40px;
+        }
+        h2 { 
+            font-size: 2rem; 
+            margin-bottom: 20px; 
+            color: var(--white); 
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-center: center;
+            gap: 12px;
+        }
+        h2::before, h2::after {
+            content: "";
+            width: 40px;
+            height: 2px;
+            background: var(--blue-accent);
+        }
         footer {
             background: var(--dark-blue);
             color: var(--white);
             text-align: center;
             padding: 20px;
             font-size: 0.9rem;
+            margin-top: auto;
         }
         @media (max-width: 600px) {
             header h1 { font-size: 1.8rem; }
@@ -63,13 +150,17 @@
 <body>
     <header>
         <h1>✨ K-POP Dream Team Audition ✨</h1>
-        <p>فرصتك لتصبح التالي في عالم K-POP العالمي! انضم إلى برنامج التدريب وأظهر موهبتك.</p>
+        <p>فرصتك لتصبح التالي في عالم K-POP العالمي! انضم إلى البرنامج التدريبي وأظهر موهبتك.</p>
+        <button class="language-toggle" id="langToggle" onclick="toggleLanguage()">
+            <span class="lang-icon" id="langIcon">EN</span>
+            <span id="langText">English</span>
+        </button>
     </header>
 
     <nav>
         <ul>
             <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About Us</a></li>
+            <li><a href="about.html" class="active">About Us</a></li>
             <li><a href="apply.html">Apply Now</a></li>
             <li><a href="contact.html">Contact</a></li>
             <li><a href="privacy.html">Privacy Policy</a></li>
@@ -78,18 +169,94 @@
 
     <section>
         <h2>Who We Are / من نحن</h2>
-        <div class="about-content">
-            <p>K-POP Dream Team is a premier entertainment company dedicated to discovering and nurturing the next generation of K-POP artists. We believe talent exists everywhere, and our mission is to bring together passionate individuals who dream of performing on the world stage.</p>
-            <p>فريق ك-pop دريم هو شركة ترفيهية رائدة مكرسة لاكتشاف ورعاية الجيل التالي من فناني K-pop. نؤمن بأن الموهوبة موجودة في كل مكان، ومهمتنا هي جمع الأفراد المتحمسين الذين يحلمون بالأداء على المسرح العالمي.</p>
-            <p>We offer comprehensive training in vocals, rap, dance, visuals, and music production. Our experienced team of industry professionals will guide you through every step of your journey, from audition to debut.</p>
-            <p>نحن نقدم تدريبًا شاملاً في الغناء، الراب، الرقص، المرئيات، وإنتاج الموسيقى. سيوجهك فريقنا المحترف من خبراء الصناعة في كل خطوة من رحلتك، من الاختبار إلى الظهور الأول.</p>
-            <p>Join thousands of applicants worldwide who have taken their first step toward stardom with us.</p>
-            <p>انضم إلى آلاف المتقدمين من جميع أنحاء العالم الذين اتخذوا أول خطوة نحو الشهرة معنا.</p>
+        <div class="content-container">
+            <div id="englishContent">
+                <p>K-POP Dream Team is a premier entertainment company dedicated to discovering and nurturing the next generation of K-POP artists. We believe talent exists everywhere, and our mission is to bring together passionate individuals who dream of performing on the world stage.</p>
+                <p>We offer comprehensive training in vocals, rap, dance, visuals, and music production. Our experienced team of industry professionals will guide you through every step of your journey, from audition to debut.</p>
+                <p>Join thousands of applicants worldwide who have taken their first step toward stardom with us.</p>
+            </div>
+            <div id="arabicContent" style="display: none;">
+                <p>فريق ك-pop دريم هو شركة ترفيهية رائدة مكرسة لاكتشاف ورعاية الجيل التالي من فناني K-pop. نؤمن بأن الموهوبة موجودة في كل مكان، ومهمتنا هي جمع الأفراد المتحمسين الذين يحلمون بالأداء على المسرح العالمي.</p>
+                <p>نحن نقدم تدريبًا شاملاً في الغناء، الراب، الرقص، المرئيات، وإنتاج الموسيقى. سيوجهك فريقنا المحترف من خبراء الصناعة في كل خطوة من رحلتك، من الاختبار إلى الظهور الأول.</p>
+                <p>انضم إلى آلاف المتقدمين من جميع أنحاء العالم الذين اتخذوا أول خطوة نحو الشهرة معنا.</p>
+            </div>
         </div>
     </section>
 
     <footer>
         <p>&copy; 2025 K-POP Dream Team. All rights reserved.</p>
     </footer>
+
+    <script>
+        // Language toggle functionality
+        let isArabic = false;
+        
+        const translations = {
+            en: {
+                home: "Home",
+                about: "About Us",
+                apply: "Apply Now",
+                contact: "Contact",
+                privacy: "Privacy Policy",
+                langText: "English",
+                langIcon: "EN",
+                whoWeAre: "Who We Are / من نحن"
+            },
+            ar: {
+                home: "الرئيسية",
+                about: "من نحن",
+                apply: "قدم الآن",
+                contact: "اتصل بنا",
+                privacy: "سياسة الخصوصية",
+                langText: "العربية",
+                langIcon: "AR",
+                whoWeAre: "من نحن / Who We Are"
+            }
+        };
+        
+        function toggleLanguage() {
+            isArabic = !isArabic;
+            const lang = isArabic ? 'ar' : 'en';
+            const t = translations[lang];
+            
+            // Update language toggle button
+            document.getElementById('langText').textContent = t.langText;
+            document.getElementById('langIcon').textContent = t.langIcon;
+            
+            // Update nav links
+            document.querySelectorAll('nav a')[0].textContent = t.home;
+            document.querySelectorAll('nav a')[1].textContent = t.about;
+            document.querySelectorAll('nav a')[2].textContent = t.apply;
+            document.querySelectorAll('nav a')[3].textContent = t.contact;
+            document.querySelectorAll('nav a')[4].textContent = t.privacy;
+            
+            // Update header text
+            if (isArabic) {
+                document.querySelector('header h1').textContent = '✨ فريق ك-pop دريم للاختبار ✨';
+                document.querySelector('header p').textContent = 'فرصتك لتصبح التالي في عالم K-POP العالمي! انضم إلى برنامج التدريب وأظهر موهبتك.';
+            } else {
+                document.querySelector('header h1').textContent = '✨ K-POP Dream Team Audition ✨';
+                document.querySelector('header p').textContent = 'Your chance to become the next global K-POP sensation! Join our trainee program and showcase your talent.';
+            }
+            
+            // Update section content
+            document.querySelector('section h2').textContent = t.whoWeAre;
+            document.getElementById('englishContent').style.display = isArabic ? 'none' : 'block';
+            document.getElementById('arabicContent').style.display = isArabic ? 'block' : 'none';
+        }
+        
+        // Initialize with English
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set active class for current page
+            const navLinks = document.querySelectorAll('nav a');
+            navLinks.forEach((link, index) => {
+                const href = link.getAttribute('href');
+                if (href === 'about.html' || 
+                    (window.location.pathname.endsWith('about.html') && index === 1)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

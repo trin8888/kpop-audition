@@ -14,19 +14,70 @@
             --gray-light: #f5f5f5;
             --border: #333333;
             --input-bg: #111111;
+            --success-color: #00C853;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: var(--font-sans); background: var(--bg-black); color: var(--white); line-height: 1.6; }
-        a { color: var(--blue-accent); text-decoration: none; }
-        a:hover { text-decoration: underline; }
+        body { 
+            font-family: var(--font-sans); 
+            background: var(--bg-black); 
+            color: var(--white); 
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        a { 
+            color: var(--blue-accent); 
+            text-decoration: none; 
+            transition: color 0.3s ease;
+        }
+        a:hover { 
+            color: #0056b3; 
+            text-decoration: underline; 
+        }
         header {
             background: var(--dark-blue);
             color: var(--white);
             padding: 60px 20px 40px;
             text-align: center;
+            position: relative;
         }
-        header h1 { font-size: 2.5rem; margin-bottom: 10px; }
-        header p { font-size: 1.2rem; opacity: 0.9; max-width: 600px; margin: 0 auto; }
+        header h1 { 
+            font-size: 2.5rem; 
+            margin-bottom: 10px; 
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        header p { 
+            font-size: 1.2rem; 
+            opacity: 0.9; 
+            max-width: 600px; 
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        .language-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #111111;
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            padding: 8px 16px;
+            color: var(--white);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .language-toggle:hover {
+            background: var(--border);
+            transform: scale(1.05);
+        }
+        .language-toggle .lang-icon {
+            font-size: 1.2rem;
+        }
         nav {
             background: var(--bg-black);
             padding: 15px 20px;
@@ -42,87 +93,134 @@
             list-style: none;
             flex-wrap: wrap;
         }
-        nav a { color: var(--white); font-weight: 500; font-size: 0.95rem; }
-        section { padding: 60px 20px; max-width: 1000px; margin: 0 auto; }
-        h2 { font-size: 2rem; margin-bottom: 20px; color: var(--white); text-align: center; }
-        .application-form {
-            background: var(--bg-black);
-            padding: 40px;
-            border-radius: 10px;
-            border: 2px solid var(--border);
-            max-width: 600px;
-            margin: 0 auto;
+        nav a { 
+            color: var(--white); 
+            font-weight: 500; 
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
         }
-        .form-group { margin-bottom: 20px; }
+        nav a:hover {
+            background: #111111;
+            color: var(--blue-accent);
+        }
+        nav a.active {
+            background: var(--blue-accent);
+            color: var(--white);
+        }
+        section { 
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+        }
+        .application-form {
+            background: var(--input-bg);
+            padding: 40px;
+            border-radius: 16px;
+            border: 2px solid var(--border);
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        .form-group { margin-bottom: 24px; }
         .form-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-weight: 600;
             color: var(--white);
+            font-size: 1rem;
         }
         .form-group input, .form-group select {
             width: 100%;
-            padding: 12px 15px;
-            background: var(--input-bg);
+            padding: 14px 16px;
+            background: #000000;
             border: 2px solid var(--border);
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 1rem;
             font-family: inherit;
             color: var(--white);
+            transition: border-color 0.3s ease;
         }
         .form-group input:focus, .form-group select:focus {
             outline: none;
             border-color: var(--blue-accent);
+            background: #0a0a0a;
         }
         .checkbox-group {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-top: 8px;
+            gap: 12px;
+            margin-top: 10px;
         }
         .checkbox-item {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
         .checkbox-item input { width: auto; }
-        .checkbox-item label { margin: 0; font-weight: normal; color: var(--white); }
+        .checkbox-item label { 
+            margin: 0; 
+            font-weight: normal; 
+            color: var(--white);
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
         .file-upload {
             border: 2px dashed var(--border);
-            border-radius: 6px;
+            border-radius: 10px;
             padding: 30px;
             text-align: center;
             cursor: pointer;
-            transition: border-color 0.3s;
-            background: var(--input-bg);
+            transition: all 0.3s ease;
+            background: #000000;
         }
-        .file-upload:hover { border-color: var(--blue-accent); }
+        .file-upload:hover { 
+            border-color: var(--blue-accent);
+            background: #0a0a0a;
+            transform: scale(1.02);
+        }
         .file-upload input { display: none; }
         .submit-btn {
             background: var(--blue-accent);
             color: var(--white);
-            padding: 15px 30px;
+            padding: 16px 32px;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
             width: 100%;
-            transition: background 0.3s;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
         }
-        .submit-btn:hover { background: #0056b3; }
+        .submit-btn:hover { 
+            background: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 116, 217, 0.3);
+        }
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        .form-note {
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-top: 8px;
+            text-align: center;
+        }
         footer {
             background: var(--dark-blue);
             color: var(--white);
             text-align: center;
             padding: 20px;
             font-size: 0.9rem;
+            margin-top: auto;
         }
         @media (max-width: 600px) {
             header h1 { font-size: 1.8rem; }
             nav ul { gap: 15px; }
             .checkbox-group { grid-template-columns: 1fr; }
-            .application-form { padding: 25px 20px; }
+            .application-form { padding: 25px; }
         }
     </style>
 </head>
@@ -130,13 +228,17 @@
     <header>
         <h1>✨ K-POP Dream Team Audition ✨</h1>
         <p>فرصتك لتصبح التالي في عالم K-POP العالمي! انضم إلى برنامج التدريب وأظهر موهبتك.</p>
+        <button class="language-toggle" id="langToggle" onclick="toggleLanguage()">
+            <span class="lang-icon" id="langIcon">EN</span>
+            <span id="langText">English</span>
+        </button>
     </header>
 
     <nav>
         <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="about.html">About Us</a></li>
-            <li><a href="apply.html">Apply Now</a></li>
+            <li><a href="apply.html" class="active">Apply Now</a></li>
             <li><a href="contact.html">Contact</a></li>
             <li><a href="privacy.html">Privacy Policy</a></li>
         </ul>
@@ -147,17 +249,17 @@
         <form class="application-form" id="auditionForm" dir="ltr">
             <div class="form-group">
                 <label for="fullname">Full Name / الاسم الكامل *</label>
-                <input type="text" id="fullname" name="fullname" required placeholder="Enter your full name">
+                <input type="text" id="fullname" name="fullname" required placeholder="Enter your full name / أدخل اسمك الكامل">
             </div>
 
             <div class="form-group">
                 <label for="stagename">Stage Name / اسم المسرح *</label>
-                <input type="text" id="stagename" name="stagename" required placeholder="Your stage name">
+                <input type="text" id="stagename" name="stagename" required placeholder="Your stage name / اسمك المسرحي">
             </div>
 
             <div class="form-group">
                 <label for="age">Age / العمر *</label>
-                <input type="number" id="age" name="age" min="12" max="30" required placeholder="Your age">
+                <input type="number" id="age" name="age" min="12" max="30" required placeholder="Your age / عمرك">
             </div>
 
             <div class="form-group">
@@ -181,12 +283,12 @@
 
             <div class="form-group">
                 <label for="height">Height (cm) / الارتفاع (سم) *</label>
-                <input type="number" id="height" name="height" min="120" max="220" required placeholder="Your height in cm">
+                <input type="number" id="height" name="height" min="120" max="220" required placeholder="Your height in cm / طولك بالسم">
             </div>
 
             <div class="form-group">
                 <label>Social Media (WhatsApp, TikTok, or Instagram) / وسائل التواصل (واتساب، تيك توك، أو إنستغرام) *</label>
-                <input type="text" id="whatsapp" name="whatsapp" placeholder="Phone number or @username" required>
+                <input type="text" id="whatsapp" name="whatsapp" placeholder="Phone number or @username / رقم الهاتف أو @اسم المستخدم" required>
             </div>
 
             <div class="form-group">
@@ -222,7 +324,8 @@
                     <p style="font-size: 0.85rem; color: #aaa;">MP4, MOV, AVI (max 100MB)</p>
                     <input type="file" id="video" name="video" accept="video/*">
                 </div>
-                <p id="file-name" style="margin-top: 10px; font-size: 0.9rem; color: #aaa;"></p>
+                <p id="file-name" style="margin-top: 12px; font-size: 0.9rem; color: #aaa;"></p>
+                <p class="form-note">We accept MP4, MOV, and AVI formats up to 100MB in size.</p>
             </div>
 
             <button type="submit" class="submit-btn">Submit Audition Application / إرسال طلب الاختبار</button>
@@ -234,6 +337,134 @@
     </footer>
 
     <script>
+        // Language toggle functionality
+        let isArabic = false;
+        
+        const translations = {
+            en: {
+                home: "Home",
+                about: "About Us",
+                apply: "Apply Now",
+                contact: "Contact",
+                privacy: "Privacy Policy",
+                langText: "English",
+                langIcon: "EN",
+                auditionApplication: "Audition Application / طلب الاختبار",
+                fullName: "Full Name / الاسم الكامل *",
+                stageName: "Stage Name / اسم المسرح *",
+                age: "Age / العمر *",
+                country: "Country / الدولة *",
+                height: "Height (cm) / الارتفاع (سم) *",
+                socialMedia: "Social Media (WhatsApp, TikTok, or Instagram) / وسائل التواصل (واتساب، تيك توك، أو إنستغرام) *",
+                positions: "Position(s) You Can Apply For / المناصب التي يمكنك التقديم لها *",
+                vocal: "Vocal / غناء",
+                rap: "Rap / راب",
+                visual: "Visual / مرئي",
+                producer: "Productor / منتج",
+                dance: "Dance / رقص",
+                videoUpload: "Audition Video Upload / رفع فيديو الاختبار *",
+                submitBtn: "Submit Audition Application / إرسال طلب الاختبار",
+                fileUploadText: "📹 Click to upload your audition video",
+                fileFormatText: "MP4, MOV, AVI (max 100MB)",
+                fileNote: "We accept MP4, MOV, and AVI formats up to 100MB in size."
+            },
+            ar: {
+                home: "الرئيسية",
+                about: "من نحن",
+                apply: "قدم الآن",
+                contact: "اتصل بنا",
+                privacy: "سياسة الخصوصية",
+                langText: "العربية",
+                langIcon: "AR",
+                auditionApplication: "طلب الاختبار / Audition Application",
+                fullName: "الاسم الكامل / Full Name *",
+                stageName: "اسم المسرح / Stage Name *",
+                age: "العمر / Age *",
+                country: "الدولة / Country *",
+                height: "الارتفاع (سم) / Height (cm) *",
+                socialMedia: "وسائل التواصل (واتساب، تيك توك، أو إنستغرام) / Social Media (WhatsApp, TikTok, or Instagram) *",
+                positions: "المناصب التي يمكنك التقديم لها / Position(s) You Can Apply For *",
+                vocal: "غناء / Vocal",
+                rap: "راب / Rap",
+                visual: "مرئي / Visual",
+                producer: "منتج / Productor",
+                dance: "رقص / Dance",
+                videoUpload: "رفع فيديو الاختبار / Audition Video Upload *",
+                submitBtn: "إرسال طلب الاختبار / Submit Audition Application",
+                fileUploadText: "📹 اضغط لرفع فيديو الاختبار",
+                fileFormatText: "MP4, MOV, AVI (حد أقصى 100 ميجابايت)",
+                fileNote: "نقبل صيغ MP4, MOV, و AVI بحجم أقصى 100 ميجابايت."
+            }
+        };
+        
+        function toggleLanguage() {
+            isArabic = !isArabic;
+            const lang = isArabic ? 'ar' : 'en';
+            const t = translations[lang];
+            
+            // Update language toggle button
+            document.getElementById('langText').textContent = t.langText;
+            document.getElementById('langIcon').textContent = t.langIcon;
+            
+            // Update nav links
+            document.querySelectorAll('nav a')[0].textContent = t.home;
+            document.querySelectorAll('nav a')[1].textContent = t.about;
+            document.querySelectorAll('nav a')[2].textContent = t.apply;
+            document.querySelectorAll('nav a)[3].textContent = t.contact;
+            document.querySelectorAll('nav a')[4].textContent = t.privacy;
+            
+            // Update header text
+            if (isArabic) {
+                document.querySelector('header h1').textContent = '✨ فريق ك-pop دريم للاختبار ✨';
+                document.querySelector('header p').textContent = 'فرصتك لتصبح التالي في عالم K-POP العالمي! انضم إلى برنامج التدريب وأظهر موهبتك.';
+            } else {
+                document.querySelector('header h1').textContent = '✨ K-POP Dream Team Audition ✨';
+                document.querySelector('header p').textContent = 'Your chance to become the next global K-POP sensation! Join our trainee program and showcase your talent.';
+            }
+            
+            // Update section content
+            document.querySelector('section h2').textContent = t.auditionApplication;
+            
+            // Update form labels and placeholders
+            document.querySelector('label[for="fullname"]').textContent = t.fullName;
+            document.getElementById('fullname').placeholder = t.fullName.replace(' *', '');
+            
+            document.querySelector('label[for="stagename"]').textContent = t.stageName;
+            document.getElementById('stagename').placeholder = t.stageName.replace(' *', '');
+            
+            document.querySelector('label[for="age"]').textContent = t.age;
+            document.getElementById('age').placeholder = t.age.replace(' *', '');
+            
+            document.querySelector('label[for="country"]').textContent = t.country;
+            
+            document.querySelector('label[for="height"]').textContent = t.height;
+            document.getElementById('height').placeholder = t.height.replace(' *', '');
+            
+            // Update social media label
+            const socialLabel = document.querySelector('.application-form .form-group:nth-child(6) label');
+            socialLabel.textContent = t.socialMedia;
+            document.getElementById('whatsapp').placeholder = t.socialMedia.replace(' *', '');
+            
+            // Update positions label
+            document.querySelector('.application-form .form-group:nth-child(7) label').textContent = t.positions;
+            
+            // Update checkbox labels
+            document.querySelector('label[for="vocal"]').textContent = t.vocal;
+            document.querySelector('label[for="rap"]').textContent = t.rap;
+            document.querySelector('label[for="visual"]').textContent = t.visual;
+            document.querySelector('label[for="producer"]').textContent = t.producer;
+            document.querySelector('label[for="dance"]').textContent = t.dance;
+            
+            // Update video upload
+            document.querySelector('.application-form .form-group:nth-child(8) label').textContent = t.videoUpload;
+            document.querySelector('.file-upload p:first-child').textContent = t.fileUploadText;
+            document.querySelector('.file-upload p:nth-child(2)').textContent = t.fileFormatText;
+            document.querySelector('.form-note').textContent = t.fileNote;
+            
+            // Update submit button
+            document.querySelector('.submit-btn').textContent = t.submitBtn;
+        }
+        
         // File upload display
         document.getElementById('video').addEventListener('change', function(e) {
             const fileName = e.target.files[0]?.name || 'No file selected';
@@ -243,9 +474,29 @@
         // Form submission
         document.getElementById('auditionForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            alert('Thank you for your audition submission! Our team will review your application and contact you via your provided social media.');
+            
+            // Basic validation
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // Show success message
+            alert('Thank you for your audition submission! Our team will review your application and contact you via your provided social media.\n\nشكرًا لإرسال طلب الاختبار! سيقوم فريقنا بمراجعة طلبك والاتصال بك عبر وسائل التواصل الاجتماعي التي قدمتها.');
+            
+            // Reset form
             this.reset();
             document.getElementById('file-name').textContent = '';
+        });
+        
+        // Initialize with English
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set active class for current page
+            const navLinks = document.querySelectorAll('nav a');
+            navLinks.forEach((link, index) => {
+                if (link.getAttribute('href') === 'apply.html' || 
+                    (window.location.pathname.endsWith('apply.html') && index === 2)) {
+                    link.classList.add('active');
+                }
+            });
         });
     </script>
 </body>

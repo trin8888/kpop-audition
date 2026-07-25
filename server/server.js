@@ -56,7 +56,29 @@ function hash(pw) {
   return crypto.createHash('sha256').update('kp0p' + pw).digest('hex');
 }
 
-// ===== PUBLIC: submit audition =====
+// ===== PUBLIC: create team =====
+app.post('/api/create-team', async (req, res) => {
+  try {
+    const { teamName, email } = req.body;
+    if (!teamName || !email) return res.status(400).json({ ok: false, error: 'Team name and email required' });
+    const existing = await db.collection('teams').findOne({ teamName: teamName.toLowerCase() });
+    if (existing) return res.status(400).json({ ok: false, error: 'Team name taken' });
+    await db.collection('teams').insertOne({ teamName: teamName.toLowerCase(), email, createdAt: new Date(), videoCount: 0 });
+    res.json({ ok: true, teamName: teamName.toLowerCase() });
+  } catch (e) { res.status(500).json({ ok: false, error: e.message }); }
+});
+
+// ===== PUBLIC: team page =====
+app.get('/teams/:teamName', async (req, res) => {
+  try {
+    const team = await db.collection('teams').findOne({ teamName: req.params.teamName.toLowerCase() });
+    if (!team) return res.status(404).send('Team not found');
+    const applicants = await db.collection('applicants').find({ team: team.teamName }).toArray();
+    res.send(teamPage(team, applicants));
+  } catch (e) { res.status(500).send(e.message); }
+});
+
+// ===== Update apply to save team =====
 app.post('/api/apply', upload.single('video'), async (req, res) => {
   try {
     const positions = Array.isArray(req.body.positions) ? req.body.positions : (req.body.positions ? [req.body.positions] : []);
@@ -68,6 +90,7 @@ app.post('/api/apply', upload.single('video'), async (req, res) => {
       height: parseInt(req.body.height, 10) || null,
       social: (req.body.social || '').toString().trim(),
       positions,
+      team: (req.body.team || '').toString().toLowerCase().trim() || 'general',
       createdAt: new Date(),
       hasVideo: false
     };
@@ -246,6 +269,30 @@ function adminPage(list) {
   </body>`;
 }
 function esc(s){return (s||'').toString().replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+// ===== Team page (public) =====
+function teamPage(team, applicants) {
+  const rows = applicants.map(a => `<tr style="border-bottom:1px solid #222">
+    <td style="padding:12px">${esc(a.fullName)} <span style="color:#0074D9">(${esc(a.stageName)})</span></td>
+    <td style="padding:12px">${esc(a.country||'')}</td>
+    <td style="padding:12px">${a.age||''}</td>
+    <td style="padding:12px">${(a.positions||[]).join(', ')}</td>
+    <td style="padding:12px">${a.hasVideo ? '🎬' : '—'}</td>
+  </tr>`).join('');
+  return `<!doctype html><meta charset=utf-8><title>${esc(team.teamName)} - K-POP Dream Team</title>
+  <body style="background:#000;color:#fff;font-family:sans-serif;margin:0">
+  <header style="background:#001f3f;padding:20px 30px">
+    <h1 style="margin:0;color:#0074D9">${esc(team.teamName)}</h1>
+  </header>
+  <div style="padding:30px">
+    <h2 style="color:#0074D9">Applicants (${applicants.length})</h2>
+    <table style="width:100%;border-collapse:collapse;margin-top:10px">
+      <thead><tr style="color:#888;text-align:left"><th style="padding:12px">Name</th><th style="padding:12px">Country</th><th style="padding:12px">Age</th><th style="padding:12px">Positions</th><th style="padding:12px">Video</th></tr></thead>
+      <tbody>${rows || '<tr><td colspan=5 style="padding:30px;text-align:center;color:#666">No applicants yet</td></tr>'}</tbody>
+    </table>
+  </div>
+  </body>`;
+}
 
 // ---- Start ----
 initDb().then(() => {

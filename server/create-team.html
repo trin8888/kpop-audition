@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Your K-POP Team / أنشئ فريقك | K-POP Dream Team</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        body { background:#000; color:#fff; font-family:sans-serif; margin:0; padding:0; }
+        header { background:#001f3f; padding:20px 30px; display:flex; justify-content:space-between; align-items:center; }
+        nav a { color:#fff; text-decoration:none; margin-left:20px; }
+        nav a.active { color:#0074D9; border-bottom:2px solid #0074D9; }
+        .container { max-width:600px; margin:40px auto; padding:20px; text-align:center; }
+        .form-card { background:#111; padding:30px; border-radius:12px; border:1px solid #333; }
+        input[type="text"], input[type="email"] { width:100%; padding:12px; margin:10px 0; border-radius:8px; border:2px solid #333; background:#000; color:#fff; }
+        .submit-btn { width:100%; padding:12px; background:#0074D9; color:#fff; border:0; border-radius:8px; font-weight:600; cursor:pointer; margin-top:10px; }
+        .submit-btn:hover { background:#005bb5; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 style="color:#0074D9;">K-POP Dream Team</h1>
+        <nav>
+            <a href="index.html">Home / الرئيسية</a>
+            <a href="contact.html">Contact / اتصل بنا</a>
+            <a href="privacy.html">Privacy / سياسة الخصوصية</a>
+            <a id="langToggle" style="cursor:pointer;color:#fff;">EN</a>
+        </nav>
+    </header>
+    <div class="container">
+        <div class="form-card">
+            <h2 style="color:#0074D9;margin:0 0 10px;">Create Your Team / أنشئ فريقك</h2>
+            <p style="color:#888;margin:0 0 20px;">Enter your team name and email to get started.</p>
+            <form id="createTeamForm" action="/api/create-team" method="POST">
+                <input type="text" name="teamName" placeholder="Team Name (e.g., EXO Dreams)" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <button type="submit" class="submit-btn">Create Team / أنشئ الفريق</button>
+            </form>
+        </div>
+    </div>
+    <footer><p style="text-align:center;color:#666;margin:20px 0;">&copy; 2025 K-POP Dream Team</p></footer>
+    <script>
+        document.getElementById('langToggle').addEventListener('click', function(){
+            const isAr = document.documentElement.lang === 'ar';
+            document.documentElement.lang = isAr ? 'en' : 'ar';
+            this.textContent = isAr ? 'EN' : 'AR';
+        });
+    </script>
+</body>
+</html>

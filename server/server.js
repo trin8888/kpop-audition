@@ -248,6 +248,22 @@ app.post('/admin/delete/:id', async (req, res) => {
   } catch (e) { res.status(500).json({ ok: false }); }
 });
 
+// ===== ADMIN: delete team =====
+app.post('/admin/teams/delete/:teamName', async (req, res) => {
+  if (!isAdmin(req)) return res.status(403).json({ ok: false });
+  try {
+    const teamName = req.params.teamName.toLowerCase();
+    // Delete all applicants in this team (and their videos)
+    const applicants = await db.collection('applicants').find({ team: teamName }).toArray();
+    for (const a of applicants) {
+      if (a.videoId) await bucket.delete(new (require('mongodb').ObjectId)(a.videoId));
+    }
+    await db.collection('applicants').deleteMany({ team: teamName });
+    await db.collection('teams').deleteOne({ teamName });
+    res.json({ ok: true });
+  } catch (e) { res.status(500).json({ ok: false }); }
+});
+
 // ===== Pages (HTML builders) =====
 // ===== HEALTHCHECK (Railway / load balancers) =====
 app.get('/health', (req, res) => res.json({ ok: true, time: new Date().toISOString() }));
@@ -321,6 +337,7 @@ function adminTeamsPage(teams) {
     <td style="padding:12px">${esc(t.email)}</td>
     <td style="padding:12px">${t.videoCount || 0}</td>
     <td style="padding:12px">${new Date(t.createdAt).toLocaleString()}</td>
+    <td style="padding:12px"><button onclick="delTeam('${t.teamName}')" style="background:#e60012;color:#fff;border:0;border-radius:6px;padding:6px 10px;cursor:pointer">Remove Team</button></td>
   </tr>`).join('');
   return `<!doctype html><meta charset=utf-8><title>Teams - K-POP Admin</title>
   <body style="background:#000;color:#fff;font-family:sans-serif;margin:0">
@@ -329,9 +346,17 @@ function adminTeamsPage(teams) {
     <a href="/admin" style="color:#aaa;text-decoration:none">← Back to Applicants</a>
   </header>
   <table style="width:100%;border-collapse:collapse;margin-top:10px">
-    <thead><tr style="color:#888;text-align:left"><th style="padding:12px">Team Name</th><th style="padding:12px">Owner Email</th><th style="padding:12px">Applicants</th><th style="padding:12px">Created</th></tr></thead>
-    <tbody>${rows || '<tr><td colspan=4 style="padding:30px;text-align:center;color:#666">No teams yet</td></tr>'}</tbody>
+    <thead><tr style="color:#888;text-align:left"><th style="padding:12px">Team Name</th><th style="padding:12px">Owner Email</th><th style="padding:12px">Applicants</th><th style="padding:12px">Created</th><th style="padding:12px"></th></tr></thead>
+    <tbody>${rows || '<tr><td colspan=5 style="padding:30px;text-align:center;color:#666">No teams yet</td></tr>'}</tbody>
   </table>
+  <script>
+    async function delTeam(name){
+      if(!confirm("Delete team '" + name + "' and all its applicants? This cannot be undone.")) return;
+      await fetch('/admin/teams/'+name,{method:'DELETE'});
+      location.reload();
+    }
+    function esc(s){return (s||'').toString().replace(/[&<>]/g,c=>({'&':'&','<':'<','>':'>'}[c]));}
+  </script>
   </body>`;
 }
 

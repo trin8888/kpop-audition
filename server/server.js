@@ -68,6 +68,14 @@ app.post('/api/create-team', async (req, res) => {
   } catch (e) { res.status(500).json({ ok: false, error: e.message }); }
 });
 
+// ===== PUBLIC: list teams (for dropdown) =====
+app.get('/api/teams', async (req, res) => {
+  try {
+    const teams = await db.collection('teams').find({}, { projection: { teamName: 1, createdAt: 1 } }).sort({ createdAt: -1 }).toArray();
+    res.json(teams);
+  } catch (e) { res.status(500).json({ ok: false, error: e.message }); }
+});
+
 // ===== PUBLIC: team page =====
 app.get('/teams/:teamName', async (req, res) => {
   try {
@@ -147,7 +155,41 @@ app.get('/admin', async (req, res) => {
   }
 });
 
-// ===== ADMIN: single applicant detail (JSON) =====
+// ===== ADMIN: teams list =====
+app.get('/admin/teams', async (req, res) => {
+  if (!isAdmin(req)) return res.status(403).send('forbidden');
+  try {
+    const teams = await db.collection('teams').find().sort({ createdAt: -1 }).toArray();
+    res.send(adminTeamsPage(teams));
+  } catch (e) {
+    res.status(500).send(e.message);
+  }
+});
+
+// ===== ADMIN: team detail =====
+app.get('/admin/teams/:teamName', async (req, res) => {
+  if (!isAdmin(req)) return res.status(403).send('forbidden');
+  try {
+    const team = await db.collection('teams').findOne({ teamName: req.params.teamName.toLowerCase() });
+    if (!team) return res.status(404).send('Team not found');
+    const applicants = await db.collection('applicants').find({ team: team.teamName }).sort({ createdAt: -1 }).toArray();
+    res.send(adminTeamDetailPage(team, applicants));
+  } catch (e) {
+    res.status(500).send(e.message);
+  }
+});
+
+// ===== PUBLIC: list teams (for dropdown) =====
+app.get('/api/teams', async (req, res) => {
+  try {
+    const teams = await db.collection('teams').find({}, { projection: { teamName: 1 } }).sort({ createdAt: -1 }).toArray();
+    res.json(teams);
+  } catch (e) {
+    res.status(500).json({ ok: false, error: e.message });
+  }
+});
+
+// ===== PUBLIC: create team =====
 app.get('/api/applicant/:id', async (req, res) => {
   if (!isAdmin(req)) return res.status(403).json({ ok: false });
   try {
@@ -227,6 +269,7 @@ function adminPage(list) {
     <td style="padding:12px">${esc(a.country||'')}</td>
     <td style="padding:12px">${a.age||''}</td>
     <td style="padding:12px">${(a.positions||[]).join(', ')}</td>
+    <td style="padding:12px">${a.team ? esc(a.team) : 'general'}</td>
     <td style="padding:12px">${a.hasVideo ? '🎬' : '—'}</td>
     <td style="padding:12px"><button onclick="del('${a._id}')" style="background:#e60012;color:#fff;border:0;border-radius:6px;padding:6px 10px;cursor:pointer">Delete</button></td>
   </tr>`).join('');
@@ -234,12 +277,13 @@ function adminPage(list) {
   <body style="background:#000;color:#fff;font-family:sans-serif;margin:0">
   <header style="background:#001f3f;padding:20px 30px;display:flex;justify-content:space-between;align-items:center">
     <h1 style="margin:0;color:#0074D9;font-size:1.4rem">K-POP Auditions (${list.length})</h1>
-    <div><a href="/admin/download-all" style="background:#0074D9;color:#fff;padding:10px 16px;border-radius:8px;text-decoration:none;margin-right:10px">⬇ Download ALL</a>
+    <div><a href="/admin/teams" style="background:#0074D9;color:#fff;padding:10px 16px;border-radius:8px;text-decoration:none;margin-right:10px">Teams</a>
+    <a href="/admin/download-all" style="background:#0074D9;color:#fff;padding:10px 16px;border-radius:8px;text-decoration:none;margin-right:10px">⬇ Download ALL</a>
     <a href="/admin/logout" style="color:#aaa;text-decoration:none">Logout</a></div>
   </header>
   <table style="width:100%;border-collapse:collapse;margin-top:10px">
-    <thead><tr style="color:#888;text-align:left"><th style="padding:12px">Name</th><th>Country</th><th>Age</th><th>Positions</th><th>Video</th><th></th></tr></thead>
-    <tbody>${rows || '<tr><td colspan=6 style="padding:30px;text-align:center;color:#666">No applicants yet</td></tr>'}</tbody>
+    <thead><tr style="color:#888;text-align:left"><th style="padding:12px">Name</th><th>Country</th><th>Age</th><th>Positions</th><th>Team</th><th>Video</th><th></th></tr></thead>
+    <tbody>${rows || '<tr><td colspan=7 style="padding:30px;text-align:center;color:#666">No applicants yet</td></tr>'}</tbody>
   </table>
   <div id="modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);padding:40px;overflow:auto">
     <div style="max-width:700px;margin:0 auto;background:#111;padding:30px;border-radius:16px;position:relative">
@@ -264,11 +308,74 @@ function adminPage(list) {
       await fetch('/admin/delete/'+id,{method:'POST'});
       location.reload();
     }
-    function esc(s){return (s||'').toString().replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+    function esc(s){return (s||'').toString().replace(/[&<>]/g,c=>({'&':'&','<':'<','>':'>'}[c]));}
   </script>
   </body>`;
 }
-function esc(s){return (s||'').toString().replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function esc(s){return (s||'').toString().replace(/[&<>"]/g,c=>({'&':'&','<':'<','>':'>','"':'"'}[c]));}
+
+// ===== ADMIN: teams list page =====
+function adminTeamsPage(teams) {
+  const rows = teams.map(t => `<tr style="border-bottom:1px solid #222">
+    <td style="padding:12px;cursor:pointer" onclick="location.href='/admin/teams/${t.teamName}'">${esc(t.teamName)}</td>
+    <td style="padding:12px">${esc(t.email)}</td>
+    <td style="padding:12px">${t.videoCount || 0}</td>
+    <td style="padding:12px">${new Date(t.createdAt).toLocaleString()}</td>
+  </tr>`).join('');
+  return `<!doctype html><meta charset=utf-8><title>Teams - K-POP Admin</title>
+  <body style="background:#000;color:#fff;font-family:sans-serif;margin:0">
+  <header style="background:#001f3f;padding:20px 30px;display:flex;justify-content:space-between;align-items:center">
+    <h1 style="margin:0;color:#0074D9;font-size:1.4rem">Teams (${teams.length})</h1>
+    <a href="/admin" style="color:#aaa;text-decoration:none">← Back to Applicants</a>
+  </header>
+  <table style="width:100%;border-collapse:collapse;margin-top:10px">
+    <thead><tr style="color:#888;text-align:left"><th style="padding:12px">Team Name</th><th style="padding:12px">Owner Email</th><th style="padding:12px">Applicants</th><th style="padding:12px">Created</th></tr></thead>
+    <tbody>${rows || '<tr><td colspan=4 style="padding:30px;text-align:center;color:#666">No teams yet</td></tr>'}</tbody>
+  </table>
+  </body>`;
+}
+
+// ===== ADMIN: team detail page =====
+function adminTeamDetailPage(team, applicants) {
+  const rows = applicants.map(a => `<tr style="border-bottom:1px solid #222">
+    <td style="padding:12px;cursor:pointer" onclick="openDetail('${a._id}')">${esc(a.fullName)} <span style="color:#0074D9">(${esc(a.stageName)})</span></td>
+    <td style="padding:12px">${esc(a.country||'')}</td>
+    <td style="padding:12px">${a.age||''}</td>
+    <td style="padding:12px">${(a.positions||[]).join(', ')}</td>
+    <td style="padding:12px">${a.hasVideo ? '🎬' : '—'}</td>
+  </tr>`).join('');
+  return `<!doctype html><meta charset=utf-8><title>${esc(team.teamName)} - Admin</title>
+  <body style="background:#000;color:#fff;font-family:sans-serif;margin:0">
+  <header style="background:#001f3f;padding:20px 30px;display:flex;justify-content:space-between;align-items:center">
+    <h1 style="margin:0;color:#0074D9">${esc(team.teamName)} (${applicants.length} applicants)</h1>
+    <a href="/admin/teams" style="color:#aaa;text-decoration:none">← All Teams</a>
+  </header>
+  <table style="width:100%;border-collapse:collapse;margin-top:10px">
+    <thead><tr style="color:#888;text-align:left"><th style="padding:12px">Name</th><th style="padding:12px">Country</th><th style="padding:12px">Age</th><th style="padding:12px">Positions</th><th style="padding:12px">Video</th></tr></thead>
+    <tbody>${rows || '<tr><td colspan=5 style="padding:30px;text-align:center;color:#666">No applicants yet</td></tr>'}</tbody>
+  </table>
+  <div id="modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);padding:40px;overflow:auto">
+    <div style="max-width:700px;margin:0 auto;background:#111;padding:30px;border-radius:16px;position:relative">
+      <button onclick="document.getElementById('modal').style.display='none'" style="position:absolute;top:15px;right:20px;background:none;border:0;color:#aaa;font-size:1.5rem;cursor:pointer">✕</button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+  <script>
+    async function openDetail(id){
+      const a = await (await fetch('/api/applicant/'+id)).json();
+      let html = '<h2 style="color:#0074D9">'+esc(a.fullName)+' ('+esc(a.stageName)+')</h2>';
+      html += '<p><b>Age:</b> '+a.age+'</p><p><b>Country:</b> '+esc(a.country)+'</p>';
+      html += '<p><b>Height:</b> '+a.height+' cm</p><p><b>Social:</b> '+esc(a.social)+'</p>';
+      html += '<p><b>Positions:</b> '+(a.positions||[]).join(', ')+'</p>';
+      html += '<p style="color:#666;font-size:.85rem">Submitted: '+(a.createdAt?new Date(a.createdAt).toLocaleString():'')+'</p>';
+      if(a.hasVideo) html += '<video src="/video/'+a._id+'" controls style="width:100%;border-radius:10px;margin-top:15px"></video>';
+      document.getElementById('modalBody').innerHTML = html;
+      document.getElementById('modal').style.display='block';
+    }
+    function esc(s){return (s||'').toString().replace(/[&<>]/g,c=>({'&':'&','<':'<','>':'>'}[c]));}
+  </script>
+  </body>`;
+}
 
 // ===== Team page (public) =====
 function teamPage(team, applicants) {

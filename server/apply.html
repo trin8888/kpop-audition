@@ -129,6 +129,14 @@
                     <input type="number" id="height" name="height" min="120" max="220" required placeholder="Your height in cm / طولك بالسم">
                 </div>
                 <div class="form-group">
+                    <label>Team to Apply To / الفريق الذي تريد التقديم له *</label>
+                    <select id="team" name="team" required>
+                        <option value="">Select a team / اختر فريقاً</option>
+                        <option value="general">General / عام (No specific team)</option>
+                    </select>
+                    <p style="font-size:0.85rem;color:#aaa;margin-top:5px">Create your own team <a href="create-team.html">here</a></p>
+                </div>
+                <div class="form-group">
                     <label>Social Media (WhatsApp, TikTok, or Instagram) / وسائل التواصل (واتساب، تيك توك، أو إنستغرام) *</label>
                     <input type="text" id="whatsapp" name="social" placeholder="Phone number or @username / رقم الهاتف أو @اسم المستخدم" required>
                 </div>
@@ -232,6 +240,19 @@
             document.querySelectorAll('nav a').forEach(function (a) {
                 if (a.getAttribute('href') === 'apply.html') a.classList.add('active');
             });
+            // Load teams into dropdown
+            fetch('/api/teams')
+                .then(r => r.json())
+                .then(teams => {
+                    const select = document.getElementById('team');
+                    teams.forEach(t => {
+                        const opt = document.createElement('option');
+                        opt.value = t.teamName;
+                        opt.textContent = t.teamName;
+                        select.appendChild(opt);
+                    });
+                })
+                .catch(() => {});
         });
     </script>
 </body>

@@ -35,6 +35,9 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(PUBLIC_DIR));
 
+// ---- Redirect root to index.html ----
+app.get('/', (req, res) => res.redirect('/index.html'));
+
 // ---- Multer: store video in memory, stream to GridFS ----
 const upload = multer({
   limits: { fileSize: MAX_MB * 1024 * 1024 },

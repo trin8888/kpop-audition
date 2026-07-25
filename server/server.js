@@ -386,18 +386,107 @@ function teamPage(team, applicants) {
     <td style="padding:12px">${(a.positions||[]).join(', ')}</td>
     <td style="padding:12px">${a.hasVideo ? '🎬' : '—'}</td>
   </tr>`).join('');
+  
+  // Application form HTML
+  const formHtml = `
+    <div style="margin-top:50px;padding-top:30px;border-top:1px solid #333">
+      <h2 style="color:#0074D9;margin-bottom:20px">Apply to ${esc(team.teamName)} / التقديم لـ ${esc(team.teamName)}</h2>
+      <form id="auditionForm" action="/api/apply" method="POST" enctype="multipart/form-data" style="background:#111;padding:30px;border-radius:16px;border:1px solid #333">
+        <input type="hidden" name="team" value="${esc(team.teamName)}">
+        <div style="margin-bottom:20px">
+          <label style="display:block;margin-bottom:8px;font-weight:500">Full Name / الاسم الكامل *</label>
+          <input type="text" name="fullName" required placeholder="Enter your full name" style="width:100%;padding:12px;border-radius:8px;border:2px solid #333;background:#000;color:#fff">
+        </div>
+        <div style="margin-bottom:20px">
+          <label style="display:block;margin-bottom:8px;font-weight:500">Stage Name / اسم المسرح *</label>
+          <input type="text" name="stageName" required placeholder="Your stage name" style="width:100%;padding:12px;border-radius:8px;border:2px solid #333;background:#000;color:#fff">
+        </div>
+        <div style="display:flex;gap:20px;margin-bottom:20px;flex-wrap:wrap">
+          <div style="flex:1;min-width:150px">
+            <label style="display:block;margin-bottom:8px;font-weight:500">Age / العمر *</label>
+            <input type="number" name="age" min="12" max="30" required placeholder="Your age" style="width:100%;padding:12px;border-radius:8px;border:2px solid #333;background:#000;color:#fff">
+          </div>
+          <div style="flex:1;min-width:150px">
+            <label style="display:block;margin-bottom:8px;font-weight:500">Height (cm) / الارتفاع *</label>
+            <input type="number" name="height" min="120" max="220" required placeholder="Height in cm" style="width:100%;padding:12px;border-radius:8px;border:2px solid #333;background:#000;color:#fff">
+          </div>
+        </div>
+        <div style="margin-bottom:20px">
+          <label style="display:block;margin-bottom:8px;font-weight:500">Country / الدولة *</label>
+          <input type="text" name="country" required placeholder="Enter your country" style="width:100%;padding:12px;border-radius:8px;border:2px solid #333;background:#000;color:#fff">
+        </div>
+        <div style="margin-bottom:20px">
+          <label style="display:block;margin-bottom:8px;font-weight:500">Social Media (WhatsApp, TikTok, or Instagram) / وسائل التواصل *</label>
+          <input type="text" name="social" required placeholder="Phone number or @username" style="width:100%;padding:12px;border-radius:8px;border:2px solid #333;background:#000;color:#fff">
+        </div>
+        <div style="margin-bottom:20px">
+          <label style="display:block;margin-bottom:8px;font-weight:500">Position(s) / المناصب *</label>
+          <div style="display:flex;flex-wrap:wrap;gap:15px">
+            <label style="display:flex;align-items:center;gap:8px"><input type="checkbox" name="positions" value="Vocal"> Vocal</label>
+            <label style="display:flex;align-items:center;gap:8px"><input type="checkbox" name="positions" value="Rap"> Rap</label>
+            <label style="display:flex;align-items:center;gap:8px"><input type="checkbox" name="positions" value="Visual"> Visual</label>
+            <label style="display:flex;align-items:center;gap:8px"><input type="checkbox" name="positions" value="Producer"> Producer</label>
+            <label style="display:flex;align-items:center;gap:8px"><input type="checkbox" name="positions" value="Dance"> Dance</label>
+          </div>
+        </div>
+        <div style="margin-bottom:20px">
+          <label style="display:block;margin-bottom:8px;font-weight:500">Audition Video / فيديو الاختبار *</label>
+          <div onclick="document.getElementById('video').click()" style="border:2px dashed #333;border-radius:10px;padding:30px;text-align:center;cursor:pointer">
+            <p>📹 Click to upload your audition video</p>
+            <p style="font-size:0.85rem;color:#aaa">MP4, MOV, AVI (max 100MB)</p>
+            <input type="file" id="video" name="video" accept="video/*" style="display:none" required>
+          </div>
+          <p id="file-name" style="margin-top:10px;font-size:0.9rem;color:#aaa"></p>
+        </div>
+        <button type="submit" style="width:100%;padding:14px;background:#0074D9;color:#fff;border:0;border-radius:8px;font-weight:600;font-size:1rem;cursor:pointer">Submit Application / إرسال الطلب</button>
+      </form>
+    </div>
+  `;
+
   return `<!doctype html><meta charset=utf-8><title>${esc(team.teamName)} - K-POP Dream Team</title>
   <body style="background:#000;color:#fff;font-family:sans-serif;margin:0">
-  <header style="background:#001f3f;padding:20px 30px">
+  <header style="background:#001f3f;padding:20px 30px;display:flex;justify-content:space-between;align-items:center">
     <h1 style="margin:0;color:#0074D9">${esc(team.teamName)}</h1>
+    <a href="/create-team.html" style="color:#aaa;text-decoration:none">Create Your Team</a>
   </header>
-  <div style="padding:30px">
-    <h2 style="color:#0074D9">Applicants (${applicants.length})</h2>
-    <table style="width:100%;border-collapse:collapse;margin-top:10px">
+  <div style="padding:30px;max-width:900px;margin:0 auto">
+    <h2 style="color:#0074D9;margin-bottom:20px">Applicants (${applicants.length})</h2>
+    <table style="width:100%;border-collapse:collapse;margin-bottom:30px">
       <thead><tr style="color:#888;text-align:left"><th style="padding:12px">Name</th><th style="padding:12px">Country</th><th style="padding:12px">Age</th><th style="padding:12px">Positions</th><th style="padding:12px">Video</th></tr></thead>
-      <tbody>${rows || '<tr><td colspan=5 style="padding:30px;text-align:center;color:#666">No applicants yet</td></tr>'}</tbody>
+      <tbody>${rows || '<tr><td colspan=5 style="padding:30px;text-align:center;color:#666">No applicants yet — be the first!</td></tr>'}</tbody>
     </table>
+    ${formHtml}
   </div>
+  <script>
+    document.getElementById('video').addEventListener('change', function(e) {
+      const name = e.target.files[0] ? e.target.files[0].name : '';
+      document.getElementById('file-name').textContent = name;
+    });
+    document.getElementById('auditionForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = this.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      btn.textContent = 'Submitting…';
+      const fd = new FormData(this);
+      try {
+        const res = await fetch('/api/apply', { method: 'POST', body: fd });
+        const data = await res.json();
+        if (data.ok) {
+          alert('Application submitted! / تم إرسال الطلب!');
+          location.reload();
+        } else {
+          alert(data.error || 'Error');
+          btn.disabled = false;
+          btn.textContent = 'Submit Application';
+        }
+      } catch (err) {
+        alert('Network error');
+        btn.disabled = false;
+        btn.textContent = 'Submit Application';
+      }
+    });
+    function esc(s){return (s||'').toString().replace(/[&<>]/g,c=>({'&':'&','<':'<','>':'>'}[c]));}
+  </script>
   </body>`;
 }
 

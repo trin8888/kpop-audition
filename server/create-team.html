@@ -1,49 +1,243 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Your K-POP Team / أنشئ فريقك | K-POP Dream Team</title>
-    <link rel="stylesheet" href="../style.css">
+    <title>K-POP Dream Team - Create Your Team</title>
     <style>
-        body { background:#000; color:#fff; font-family:sans-serif; margin:0; padding:0; }
-        header { background:#001f3f; padding:20px 30px; display:flex; justify-content:space-between; align-items:center; }
-        nav a { color:#fff; text-decoration:none; margin-left:20px; }
-        nav a.active { color:#0074D9; border-bottom:2px solid #0074D9; }
-        .container { max-width:600px; margin:40px auto; padding:20px; text-align:center; }
-        .form-card { background:#111; padding:30px; border-radius:12px; border:1px solid #333; }
-        input[type="text"], input[type="email"] { width:100%; padding:12px; margin:10px 0; border-radius:8px; border:2px solid #333; background:#000; color:#fff; }
-        .submit-btn { width:100%; padding:12px; background:#0074D9; color:#fff; border:0; border-radius:8px; font-weight:600; cursor:pointer; margin-top:10px; }
-        .submit-btn:hover { background:#005bb5; }
+        :root {
+            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --bg-black: #000000;
+            --dark-blue: #001f3f;
+            --blue-accent: #0074D9;
+            --white: #ffffff;
+            --gray-light: #f5f5f5;
+            --border: #333333;
+            --input-bg: #111111;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg-black);
+            color: var(--white);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        a { color: var(--blue-accent); text-decoration: none; transition: color 0.3s ease; }
+        a:hover { color: #0056b3; text-decoration: underline; }
+        header {
+            background: var(--dark-blue);
+            color: var(--white);
+            padding: 60px 20px 40px;
+            text-align: center;
+            position: relative;
+        }
+        header h1 { font-size: 2.5rem; margin-bottom: 10px; font-weight: 700; letter-spacing: -0.5px; }
+        header p { font-size: 1.2rem; opacity: 0.9; max-width: 600px; margin: 0 auto; line-height: 1.6; }
+        .language-toggle {
+            position: absolute; top: 20px; right: 20px;
+            background: #111111; border: 2px solid var(--border); border-radius: 20px;
+            padding: 8px 16px; color: var(--white); font-size: 0.9rem; cursor: pointer;
+            transition: all 0.3s ease; display: flex; align-items: center; gap: 6px;
+        }
+        .language-toggle:hover { background: var(--border); transform: scale(1.05); }
+        .language-toggle .lang-icon { font-size: 1.2rem; }
+        nav {
+            background: var(--bg-black); padding: 15px 20px; position: sticky; top: 0; z-index: 100;
+            border-bottom: 2px solid var(--border);
+        }
+        nav ul { display: flex; justify-content: center; gap: 30px; list-style: none; flex-wrap: wrap; }
+        nav a { color: var(--white); font-weight: 500; font-size: 0.95rem; transition: all 0.3s ease; padding: 8px 12px; border-radius: 6px; }
+        nav a:hover { background: #111111; color: var(--blue-accent); }
+        nav a.active { background: var(--blue-accent); color: var(--white); }
+        section { flex: 1; display: flex; align-items: center; justify-content: center; padding: 60px 20px; }
+        .form-card {
+            background: var(--input-bg); padding: 40px; border-radius: 16px;
+            border: 2px solid var(--border); width: 100%; max-width: 700px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+        h2 {
+            font-size: 1.8rem; margin-bottom: 24px; color: var(--white); text-align: center;
+            display: flex; align-items: center; justify-content: center; gap: 12px;
+        }
+        h2::before, h2::after { content: ""; width: 40px; height: 2px; background: var(--blue-accent); }
+        .form-note {
+            background: #0a0a0a; border: 1px solid var(--border); border-radius: 10px;
+            padding: 16px 18px; margin-bottom: 24px; font-size: 0.95rem; line-height: 1.6; color: #ccc;
+        }
+        .form-note strong { color: var(--blue-accent); }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; }
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="number"],
+        .form-group select,
+        .form-group textarea {
+            width: 100%; padding: 12px; border-radius: 8px; border: 2px solid var(--border);
+            background: var(--bg-black); color: var(--white); font-size: 1rem;
+        }
+        .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--blue-accent); }
+        .submit-btn {
+            width: 100%; padding: 14px; background: var(--blue-accent); color: var(--white);
+            border: 0; border-radius: 8px; font-weight: 600; font-size: 1rem; cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .submit-btn:hover { background: #005bb5; }
+        .submit-btn:disabled { background: #555; cursor: not-allowed; }
+        footer { background: var(--dark-blue); color: var(--white); text-align: center; padding: 20px; font-size: 0.9rem; margin-top: auto; }
+        .checkbox-group { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 10px; }
+        .checkbox-item { display: flex; align-items: center; gap: 8px; }
+        .checkbox-item input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--blue-accent); }
+        .file-upload {
+            border: 2px dashed var(--border); border-radius: 10px; padding: 30px; text-align: center; cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .file-upload:hover { border-color: var(--blue-accent); background: #1a1a2e; }
+        .file-upload input { display: none; }
+        #file-name { margin-top: 10px; font-size: 0.9rem; color: #aaa; }
+        .success-message { text-align: center; padding: 40px; }
+        .success-message h2 { color: var(--blue-accent); }
+        .success-message p { color: #ccc; line-height: 1.8; }
+        .team-url { background: #111; border: 1px solid var(--border); border-radius: 8px; padding: 15px; margin: 20px 0; }
+        .team-url code { color: var(--blue-accent); font-size: 1.1rem; }
+        .team-url button { margin-left: 10px; padding: 8px 16px; background: var(--blue-accent); color: #fff; border: 0; border-radius: 6px; cursor: pointer; }
+        @media (max-width: 600px) {
+            header h1 { font-size: 1.8rem; }
+            nav ul { gap: 15px; }
+            .form-card { padding: 25px 18px; }
+        }
     </style>
 </head>
 <body>
     <header>
-        <h1 style="color:#0074D9;">K-POP Dream Team</h1>
-        <nav>
-            <a href="index.html">Home / الرئيسية</a>
-            <a href="contact.html">Contact / اتصل بنا</a>
-            <a href="privacy.html">Privacy / سياسة الخصوصية</a>
-            <a id="langToggle" style="cursor:pointer;color:#fff;">EN</a>
-        </nav>
+        <h1>✨ K-POP Dream Team ✨</h1>
+        <p>Build your own K-POP team. Create a team page, collect audition videos, manage applicants.</p>
+        <button class="language-toggle" id="langToggle" onclick="toggleLanguage()">
+            <span class="lang-icon" id="langIcon">EN</span>
+            <span id="langText">English</span>
+        </button>
     </header>
-    <div class="container">
-        <div class="form-card">
-            <h2 style="color:#0074D9;margin:0 0 10px;">Create Your Team / أنشئ فريقك</h2>
-            <p style="color:#888;margin:0 0 20px;">Enter your team name and email to get started.</p>
+
+    <nav>
+        <ul>
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+        </ul>
+    </nav>
+
+    <section>
+        <div class="form-card" id="formCard">
+            <h2 id="pageTitle">Create Your Team / أنشئ فريقك</h2>
+            <div class="form-note" id="formNote">
+                <strong>Enter your team name and email</strong> to create your team page instantly.
+                You'll get a unique URL to share with applicants.
+            </div>
             <form id="createTeamForm" action="/api/create-team" method="POST">
-                <input type="text" name="teamName" placeholder="Team Name (e.g., EXO Dreams)" required>
-                <input type="email" name="email" placeholder="Your Email" required>
-                <button type="submit" class="submit-btn">Create Team / أنشئ الفريق</button>
+                <div class="form-group">
+                    <label for="teamName">Team Name / اسم الفريق *</label>
+                    <input type="text" id="teamName" name="teamName" required placeholder="e.g., EXO Dreams, Next Gen, Starlight">
+                </div>
+                <div class="form-group">
+                    <label for="email">Your Email / بريدك الإلكتروني *</label>
+                    <input type="email" id="email" name="email" required placeholder="you@example.com">
+                </div>
+                <button type="submit" class="submit-btn" id="submitBtn">Create Team / أنشئ الفريق</button>
             </form>
         </div>
-    </div>
-    <footer><p style="text-align:center;color:#666;margin:20px 0;">&copy; 2025 K-POP Dream Team</p></footer>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 K-POP Dream Team. All rights reserved.</p>
+    </footer>
+
     <script>
-        document.getElementById('langToggle').addEventListener('click', function(){
-            const isAr = document.documentElement.lang === 'ar';
-            document.documentElement.lang = isAr ? 'en' : 'ar';
-            this.textContent = isAr ? 'EN' : 'AR';
+        let isArabic = false;
+        const t = {
+            en: {
+                home: "Home", about: "About Us", contact: "Contact", privacy: "Privacy Policy",
+                langText: "English", langIcon: "EN",
+                pageTitle: "Create Your Team / أنشئ فريقك",
+                note: "<strong>Enter your team name and email</strong> to create your team page instantly. You'll get a unique URL to share with applicants.",
+                teamCreated: "Team Created! / تم إنشاء الفريق!",
+                yourTeamUrl: "Your Team URL:",
+                copyBtn: "Copy",
+                redirecting: "Redirecting to your team page... / جاري التوجيه لصفحة فريقك..."
+            },
+            ar: {
+                home: "الرئيسية", about: "من نحن", contact: "اتصل بنا", privacy: "سياسة الخصوصية",
+                langText: "العربية", langIcon: "AR",
+                pageTitle: "أنشئ فريقك / Create Your Team",
+                note: "<strong>أدخل اسم فريقك وبريدك الإلكتروني</strong> لإنشاء صفحة فريقك فوراً. ستحصل على رابط فريد لمشاركته مع المتقدمين.",
+                teamCreated: "تم إنشاء الفريق! / Team Created!",
+                yourTeamUrl: "رابط فريقك:",
+                copyBtn: "نسخ",
+                redirecting: "جاري التوجيه لصفحة فريقك... / Redirecting to your team page..."
+            }
+        };
+        function toggleLanguage() {
+            isArabic = !isArabic;
+            const lang = isArabic ? 'ar' : 'en';
+            const d = t[lang];
+            document.getElementById('langText').textContent = d.langText;
+            document.getElementById('langIcon').textContent = d.langIcon;
+            const nav = document.querySelectorAll('nav a');
+            nav[0].textContent = d.home; nav[1].textContent = d.about; nav[2].textContent = d.contact; nav[3].textContent = d.privacy;
+            if (isArabic) {
+                document.querySelector('header h1').textContent = '✨ فريق ك-pop دريم ✨';
+                document.querySelector('header p').textContent = 'ابنِ فريق K-POP الخاص بك. أنشئ صفحة فريق، اجمع فيديوهات الاختبار، وأدر المتقدمين.';
+            } else {
+                document.querySelector('header h1').textContent = '✨ K-POP Dream Team ✨';
+                document.querySelector('header p').textContent = 'Build your own K-POP team. Create a team page, collect audition videos, manage applicants.';
+            }
+            document.getElementById('pageTitle').textContent = d.pageTitle;
+            document.getElementById('formNote').innerHTML = d.note;
+        }
+
+        document.getElementById('createTeamForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.textContent = 'Creating… / جاري الإنشاء…';
+            const fd = new FormData(this);
+            try {
+                const res = await fetch('/api/create-team', { method: 'POST', body: fd });
+                const data = await res.json();
+                if (data.ok) {
+                    const card = document.querySelector('.form-card');
+                    card.innerHTML = `
+                        <div class="success-message">
+                            <h2>✅ ${t[isArabic ? 'ar' : 'en'].teamCreated}</h2>
+                            <p>Your team <strong>${data.teamName}</strong> is ready.</p>
+                            <div class="team-url">
+                                <strong>${t[isArabic ? 'ar' : 'en'].yourTeamUrl}</strong><br>
+                                <code>https://${window.location.host}/teams/${data.teamName}</code>
+                                <button onclick="navigator.clipboard.writeText('https://${window.location.host}/teams/${data.teamName}')">${t[isArabic ? 'ar' : 'en'].copyBtn}</button>
+                            </div>
+                            <p>${t[isArabic ? 'ar' : 'en'].redirecting}</p>
+                        </div>`;
+                    setTimeout(() => {
+                        window.location.href = `/teams/${data.teamName}`;
+                    }, 2000);
+                } else {
+                    alert(data.error || 'Error');
+                    btn.disabled = false;
+                    btn.textContent = 'Create Team / أنشئ الفريق';
+                }
+            } catch (err) {
+                alert('Network error — please try again');
+                btn.disabled = false;
+                btn.textContent = 'Create Team / أنشئ الفريق';
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('nav a').forEach(a => {
+                if (a.getAttribute('href') === 'index.html') a.classList.add('active');
+            });
         });
     </script>
 </body>

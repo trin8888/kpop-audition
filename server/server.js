@@ -16,7 +16,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const ADMIN_PW = process.env.ADMIN_PASSWORD || 'CHANGE_ME';
 const MAX_MB = parseInt(process.env.MAX_UPLOAD_MB || '100', 10);
-const PUBLIC_DIR = process.env.PUBLIC_DIR || path.join(__dirname, '..');
+// Public directory is current folder (where HTML files live in server/)
+const PUBLIC_DIR = __dirname;
 
 // ---- Mongo ----
 const client = new MongoClient(process.env.MONGODB_URI, { maxPoolSize: 10 });

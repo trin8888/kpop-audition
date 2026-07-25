@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - K-POP Dream Team Audition</title>
+    <style>
+        :root {
+            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --bg-black: #000000;
+            --dark-blue: #001f3f;
+            --blue-accent: #0074D9;
+            --white: #ffffff;
+            --gray-light: #f5f5f5;
+            --border: #333333;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: var(--font-sans); 
+            background: var(--bg-black); 
+            color: var(--white); 
+            line-height: 1.7;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        a { 
+            color: var(--blue-accent); 
+            text-decoration: none; 
+            transition: color 0.3s ease;
+        }
+        a:hover { 
+            color: #0056b3; 
+            text-decoration: underline; 
+        }
+        header {
+            background: var(--dark-blue);
+            color: var(--white);
+            padding: 60px 20px 40px;
+            text-align: center;
+            position: relative;
+        }
+        header h1 { 
+            font-size: 2.5rem; 
+            margin-bottom: 10px; 
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        header p { 
+            font-size: 1.2rem; 
+            opacity: 0.9; 
+            max-width: 600px; 
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        .language-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #111111;
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            padding: 8px 16px;
+            color: var(--white);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .language-toggle:hover {
+            background: var(--border);
+            transform: scale(1.05);
+        }
+        .language-toggle .lang-icon {
+            font-size: 1.2rem;
+        }
+        nav {
+            background: var(--bg-black);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 2px solid var(--border);
+        }
+        nav ul {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+        nav a { 
+            color: var(--white); 
+            font-weight: 500; 
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+        nav a:hover {
+            background: #111111;
+            color: var(--blue-accent);
+        }
+        nav a.active {
+            background: var(--blue-accent);
+            color: var(--white);
+        }
+        section { 
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+        }
+        .privacy-container {
+            background: #111111;
+            border-radius: 16px;
+            padding: 40px;
+            width: 100%;
+            max-width: 800px;
+            border: 1px solid var(--border);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        h2 { 
+            font-size: 2rem; 
+            margin-bottom: 30px; 
+            color: var(--white); 
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        h2::before, h2::after {
+            content: "";
+            width: 40px;
+            height: 2px;
+            background: var(--blue-accent);
+        }
+        .privacy-content {
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+        .privacy-content h3 {
+            color: var(--blue-accent);
+            margin: 25px 0 15px;
+            font-size: 1.3rem;
+            border-left: 3px solid var(--blue-accent);
+            padding-left: 12px;
+        }
+        .privacy-content p {
+            margin-bottom: 18px;
+        }
+        .privacy-content ul {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+        .privacy-content li {
+            margin-bottom: 8px;
+        }
+        footer {
+            background: var(--dark-blue);
+            color: var(--white);
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9rem;
+            margin-top: auto;
+        }
+        @media (max-width: 600px) {
+            header h1 { font-size: 1.8rem; }
+            nav ul { gap: 15px; }
+            .privacy-container { padding: 25px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>✨ K-POP Dream Team Audition ✨</h1>
+        <p>فرصتك لتصبح التالي في عالم K-POP العالمي! انضم إلى برنامج التدريب وأظهر موهبتك.</p>
+        <button class="language-toggle" id="langToggle" onclick="toggleLanguage()">
+            <span class="lang-icon" id="langIcon">EN</span>
+            <span id="langText">English</span>
+        </button>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="apply.html">Apply Now</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="privacy.html" class="active">Privacy Policy</a></li>
+        </ul>
+    </nav>
+
+    <section>
+        <h2>Privacy Policy / سياسة الخصوصية</h2>
+        <div class="privacy-container">
+            <div class="privacy-content" id="englishPrivacy">
+                <h3>Information Collection / جمع المعلومات</h3>
+                <p>We collect personal information including your name, age, country, social media handles, and audition video solely for the purpose of reviewing audition applications.</p>
+                <p>نجمع المعلومات الشخصية بما في ذلك اسمك، عمرك، دولتك، حسابات التواصل الاجتماعي، وفيديو الاختبار حصريًا لغرض مراجعة طلبات الاختبار.</p>
+
+                <h3>How We Use Your Data / كيف نستخدم بياناتك</h3>
+                <p>Your information is used exclusively for audition evaluation and potential follow-up communication. We do not share your data with third parties without your explicit consent.</p>
+                <p>تُستخدم معلوماتك حصرًا لتقييم الاختبار والتواصل المحتمل للمتابعة. نحن لا نشارك بياناتك مع أطراف ثالثة بدون موافقتك الصريحة.</p>
+
+                <h3>Data Security / أمان البيانات</h3>
+                <p>All submissions are stored securely and accessed only by our audition review team. Videos are used solely for evaluation purposes.</p>
+                <p>جميع المشاركات تُخزن بأمان وتُصل إليها فقط فريق مراجعة الاختبار لدينا. تُستخدم مقاطع الفيديو حصرًا لأغراض التقييم.</p>
+
+                <h3>Your Rights / حقوقك</h3>
+                <p>You may request deletion of your personal data at any time by contacting us. We retain audition materials for up to 6 months after submission.</p>
+                <p>يمكنك طلب حذف بياناتك الشخصية في أي وقت بالاتصال بنا. نحتفظ بمواد الاختبار لمدة تصل إلى 6 أشهر بعد الإرسال.</p>
+
+                <h3>Policy Updates / تحديثات السياسة</h3>
+                <p>We may update this policy. Continued use of our audition form indicates acceptance of any changes.</p>
+                <p>يجوز لنا تحديث هذه السياسة. استخدام هذا أواف موافقا
+
+                <h3>Data Transfer / نقل البيانات</h3>
+                <p>For your convenience, we may transfer your data to secure cloud storage services to ensure backup and accessibility.</p>
+                <p>لراحتك، قد نقوم بنقل بياناتك إلى خدمات تخزين سحابية آمنة لضمان النسخ الاحتياطي والوصول.</p>
+            </div>
+            
+            <div class="privacy-content" id="arabicPrivacy" style="display: none;">
+                <h3>Information Collection / جمع المعلومات</h3>
+                <p>نجمع المعلومات الشخصية بما في ذلك اسمك، عمرك، دولتك، حسابات التواصل الاجتماعي، وفيديو الاختبار حصريًا لغرض مراجعة طلبات الاختبار.</p>
+                <p>We collect personal information including your name, age, country, social media handles, and audition video solely for the purpose of reviewing audition applications.</p>
+
+                <h3>How We Use Your Data / كيف نستخدم بياناتك</h3>
+                <p>تُستخدم معلوماتك حصرًا لتقييم الاختبار والتواصل المحتمل للمتابعة. نحن لا نشارك بياناتك مع أطراف ثالثة بدون موافقتك الصريحة.</p>
+                <p>Your information is used exclusively for audition evaluation and potential follow-up communication. We do not share your data with third parties without your explicit consent.</p>
+
+                <h3>Data Security / أمان البيانات</h3>
+                <p>جميع المشاركات تُخزن بأمان وتُصل إليها فقط فريق مراجعة الاختبار لدينا. تُستخدم مقاطع الفيديو حصرًا لأغراض التقييم.</p>
+                <p>All submissions are stored securely and accessed only by our audition review team. Videos are used solely for evaluation purposes.</p>
+
+                <h3>Your Rights / حقوقك</h3>
+                <p>يمكنك طلب حذف بياناتك الشخصية في أي وقت بالاتصال بنا. نحتفظ بمواد الاختبار لمدة تصل إلى 6 أشهر بعد الإرسال.</p>
+                <p>You may request deletion of your personal data at any time by contacting us. We retain audition materials for up to 6 months after submission.</p>
+
+                <h3>Policy Updates / تحديثات السياسة</h3>
+                <p>يجوز لنا تحديث استخدام هذه السياسة. استمرارك في استخدام نموذج الاختبار يشير إلى قبولك لأي تغييرات.</p>
+                <p>We may update this policy. Continued use of our audition form indicates acceptance of any changes.</p>
+
+                <h3>Data Transfer / نقل البيانات</h3>
+                <p>لراحتك، قد نقوم بنقل بياناتك إلى خدمات تخزين سحابية آمنة لضمان النسخ الاحتياطي والوصول.</p>
+                <p>For your convenience, we may transfer your data to secure cloud storage services to ensure backup and accessibility.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 K-POP Dream Team. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Language toggle functionality
+        let isArabic = false;
+        
+        const translations = {
+            en: {
+                home: "Home",
+                about: "About Us",
+                apply: "Apply Now",
+                contact: "Contact",
+                privacy: "Privacy Policy",
+                langText: "English",
+                langIcon: "EN"
+            },
+            ar: {
+                home: "الرئيسية",
+                about: "من نحن",
+                apply: "قدم الآن",
+                contact: "اتصل بنا",
+                privacy: "سياسة الخصوصية",
+                langText: "العربية",
+                langIcon: "AR"
+            }
+        };
+        
+        function toggleLanguage() {
+            isArabic = !isArabic;
+            const lang = isArabic ? 'ar' : 'en';
+            const t = translations[lang];
+            
+            // Update language toggle button
+            document.getElementById('langText').textContent = t.langText;
+            document.getElementById('langIcon').textContent = t.langIcon;
+            
+            // Update nav links
+            document.querySelectorAll('nav a')[0].textContent = t.home;
+            document.querySelectorAll('nav a')[1].textContent = t.about;
+            document.querySelectorAll('nav a')[2].textContent = t.apply;
+            document.querySelectorAll('nav a')[3].textContent = t.contact;
+            document.querySelectorAll('nav a')[4].textContent = t.privacy;
+            
+            // Update header text
+            if (isArabic) {
+                document.querySelector('header h1').textContent = '✨ فريق ك-pop دريم للاختبار ✨';
+                document.querySelector('header p').textContent = 'فرصتك لتصبح التالي في عالم K-POP العالمي! انضم إلى برنامج التدريب وأظهر موهبتك.';
+            } else {
+                document.querySelector('header h1').textContent = '✨ K-POP Dream Team Audition ✨';
+                document.querySelector('header p').textContent = 'Your chance to become the next global K-POP sensation! Join our trainee program and showcase your talent.';
+            }
+            
+            // Update section content
+            document.querySelector('section h2').textContent = isArabic ? 'سياسة الخصوصية' : 'Privacy Policy';
+            document.getElementById('englishPrivacy').style.display = isArabic ? 'none' : 'block';
+            document.getElementById('arabicPrivacy').style.display = isArabic ? 'block' : 'none';
+        }
+        
+        // Initialize with English
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set active class for current page
+            const navLinks = document.querySelectorAll('nav a');
+            navLinks.forEach((link, index) => {
+                if (link.getAttribute('href') === 'privacy.html' || 
+                    (window.location.pathname.endsWith('privacy.html') && index === 4)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

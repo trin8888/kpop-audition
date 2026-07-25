@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply Now - K-POP Dream Team Audition</title>
+    <style>
+        :root {
+            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --bg-black: #000000;
+            --dark-blue: #001f3f;
+            --blue-accent: #0074D9;
+            --white: #ffffff;
+            --gray-light: #f5f5f5;
+            --border: #333333;
+            --input-bg: #111111;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg-black);
+            color: var(--white);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        a { color: var(--blue-accent); text-decoration: none; transition: color 0.3s ease; }
+        a:hover { color: #0056b3; text-decoration: underline; }
+        header {
+            background: var(--dark-blue);
+            color: var(--white);
+            padding: 60px 20px 40px;
+            text-align: center;
+            position: relative;
+        }
+        header h1 { font-size: 2.5rem; margin-bottom: 10px; font-weight: 700; letter-spacing: -0.5px; }
+        header p { font-size: 1.2rem; opacity: 0.9; max-width: 600px; margin: 0 auto; line-height: 1.6; }
+        .language-toggle {
+            position: absolute; top: 20px; right: 20px;
+            background: #111111; border: 2px solid var(--border); border-radius: 20px;
+            padding: 8px 16px; color: var(--white); font-size: 0.9rem; cursor: pointer;
+            transition: all 0.3s ease; display: flex; align-items: center; gap: 6px;
+        }
+        .language-toggle:hover { background: var(--border); transform: scale(1.05); }
+        .language-toggle .lang-icon { font-size: 1.2rem; }
+        nav {
+            background: var(--bg-black); padding: 15px 20px; position: sticky; top: 0; z-index: 100;
+            border-bottom: 2px solid var(--border);
+        }
+        nav ul { display: flex; justify-content: center; gap: 30px; list-style: none; flex-wrap: wrap; }
+        nav a { color: var(--white); font-weight: 500; font-size: 0.95rem; transition: all 0.3s ease; padding: 8px 12px; border-radius: 6px; }
+        nav a:hover { background: #111111; color: var(--blue-accent); }
+        nav a.active { background: var(--blue-accent); color: var(--white); }
+        section { flex: 1; display: flex; align-items: flex-start; justify-content: center; padding: 60px 20px; }
+        .form-card {
+            background: var(--input-bg); padding: 40px; border-radius: 16px;
+            border: 2px solid var(--border); width: 100%; max-width: 700px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+        h2 {
+            font-size: 1.8rem; margin-bottom: 24px; color: var(--white); text-align: center;
+            display: flex; align-items: center; justify-content: center; gap: 12px;
+        }
+        h2::before, h2::after { content: ""; width: 40px; height: 2px; background: var(--blue-accent); }
+        .form-note {
+            background: #0a0a0a; border: 1px solid var(--border); border-radius: 10px;
+            padding: 16px 18px; margin-bottom: 24px; font-size: 0.95rem; line-height: 1.6; color: #ccc;
+        }
+        .form-note strong { color: var(--blue-accent); }
+        .gform-wrap { width: 100%; border-radius: 10px; overflow: hidden; background: var(--white); }
+        iframe#gform { width: 100%; min-height: 1500px; border: 0; display: block; }
+        footer { background: var(--dark-blue); color: var(--white); text-align: center; padding: 20px; font-size: 0.9rem; margin-top: auto; }
+        @media (max-width: 600px) {
+            header h1 { font-size: 1.8rem; }
+            nav ul { gap: 15px; }
+            .form-card { padding: 25px 18px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>✨ K-POP Dream Team Audition ✨</h1>
+        <p>فرصتك لتصبح التالي في عالم K-POP العالمي! انضم إلى برنامج التدريب وأظهر موهبتك.</p>
+        <button class="language-toggle" id="langToggle" onclick="toggleLanguage()">
+            <span class="lang-icon" id="langIcon">EN</span>
+            <span id="langText">English</span>
+        </button>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="apply.html" class="active">Apply Now</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+        </ul>
+    </nav>
+
+    <section>
+        <div class="form-card">
+            <h2 id="pageTitle">Audition Application / طلب الاختبار</h2>
+
+            <div class="form-note" id="formNote">
+                <strong>Fill out the form below</strong> with your full details and upload your audition video.
+                Your submission (including the video) is saved securely to our database — no sign-in needed.
+            </div>
+
+            <form class="application-form" id="auditionForm" action="/api/apply" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="fullname">Full Name / الاسم الكامل *</label>
+                    <input type="text" id="fullname" name="fullName" required placeholder="Enter your full name / أدخل اسمك الكامل">
+                </div>
+                <div class="form-group">
+                    <label for="stagename">Stage Name / اسم المسرح *</label>
+                    <input type="text" id="stagename" name="stageName" required placeholder="Your stage name / اسمك المسرحي">
+                </div>
+                <div class="form-group">
+                    <label for="age">Age / العمر *</label>
+                    <input type="number" id="age" name="age" min="12" max="30" required placeholder="Your age / عمرك">
+                </div>
+                <div class="form-group">
+                    <label for="country">Country / الدولة *</label>
+                    <input type="text" id="country" name="country" required placeholder="Enter your country / أدخل دولتك">
+                </div>
+                <div class="form-group">
+                    <label for="height">Height (cm) / الارتفاع (سم) *</label>
+                    <input type="number" id="height" name="height" min="120" max="220" required placeholder="Your height in cm / طولك بالسم">
+                </div>
+                <div class="form-group">
+                    <label>Social Media (WhatsApp, TikTok, or Instagram) / وسائل التواصل (واتساب، تيك توك، أو إنستغرام) *</label>
+                    <input type="text" id="whatsapp" name="social" placeholder="Phone number or @username / رقم الهاتف أو @اسم المستخدم" required>
+                </div>
+                <div class="form-group">
+                    <label>Position(s) You Can Apply For / المناصب التي يمكنك التقديم لها *</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item"><input type="checkbox" id="vocal" name="positions" value="Vocal"><label for="vocal">Vocal / غناء</label></div>
+                        <div class="checkbox-item"><input type="checkbox" id="rap" name="positions" value="Rap"><label for="rap">Rap / راب</label></div>
+                        <div class="checkbox-item"><input type="checkbox" id="visual" name="positions" value="Visual"><label for="visual">Visual / مرئي</label></div>
+                        <div class="checkbox-item"><input type="checkbox" id="producer" name="positions" value="Producer"><label for="producer">Producer / منتج</label></div>
+                        <div class="checkbox-item"><input type="checkbox" id="dance" name="positions" value="Dance"><label for="dance">Dance / رقص</label></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Audition Video Upload / رفع فيديو الاختبار *</label>
+                    <div class="file-upload" onclick="document.getElementById('video').click()">
+                        <p>📹 Click to upload your audition video</p>
+                        <p style="font-size:0.85rem;color:#aaa">MP4, MOV, AVI (max 100MB)</p>
+                        <input type="file" id="video" name="video" accept="video/*">
+                    </div>
+                    <p id="file-name" style="margin-top:12px;font-size:0.9rem;color:#aaa"></p>
+                    <p class="form-note" style="margin-top:8px">We accept MP4, MOV, and AVI formats up to 100MB in size.</p>
+                </div>
+                <button type="submit" class="submit-btn" id="submitBtn">Submit Audition Application / إرسال طلب الاختبار</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 K-POP Dream Team. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // ---- Language toggle (header / nav / note) ----
+        let isArabic = false;
+        const t = {
+            en: {
+                home: "Home", about: "About Us", apply: "Apply Now", contact: "Contact", privacy: "Privacy Policy",
+                langText: "English", langIcon: "EN",
+                pageTitle: "Audition Application / طلب الاختبار",
+                note: "<strong>Fill out the form below</strong> with your full details and upload your audition video. Your submission is saved securely to our database — no sign-in needed."
+            },
+            ar: {
+                home: "الرئيسية", about: "من نحن", apply: "قدم الآن", contact: "اتصل بنا", privacy: "سياسة الخصوصية",
+                langText: "العربية", langIcon: "AR",
+                pageTitle: "طلب الاختبار / Audition Application",
+                note: "<strong>املأ النموذج أدناه</strong> ببياناتك الكاملة وارفع فيديو الاختبار. يتم حفظ طلبك بأمان في قاعدة بياناتنا — دون الحاجة إلى تسجيل الدخول."
+            }
+        };
+        function toggleLanguage() {
+            isArabic = !isArabic;
+            const lang = isArabic ? 'ar' : 'en';
+            const d = t[lang];
+            document.getElementById('langText').textContent = d.langText;
+            document.getElementById('langIcon').textContent = d.langIcon;
+            const nav = document.querySelectorAll('nav a');
+            nav[0].textContent = d.home; nav[1].textContent = d.about; nav[2].textContent = d.apply;
+            nav[3].textContent = d.contact; nav[4].textContent = d.privacy;
+            if (isArabic) {
+                document.querySelector('header h1').textContent = '✨ فريق ك-pop دريم للاختبار ✨';
+                document.querySelector('header p').textContent = 'فرصتك لتصبح التالي في عالم K-POP العالمي! انضم إلى برنامج التدريب وأظهر موهبتك.';
+            } else {
+                document.querySelector('header h1').textContent = '✨ K-POP Dream Team Audition ✨';
+                document.querySelector('header p').textContent = 'Your chance to become the next global K-POP sensation! Join our trainee program and showcase your talent.';
+            }
+            document.getElementById('pageTitle').textContent = d.pageTitle;
+            document.getElementById('formNote').innerHTML = d.note;
+        }
+
+        // ---- File upload preview ----
+        document.getElementById('video').addEventListener('change', function (e) {
+            const name = e.target.files[0] ? e.target.files[0].name : '';
+            document.getElementById('file-name').textContent = name;
+        });
+
+        // ---- Submit: native POST to /api/apply, then show message ----
+        document.getElementById('auditionForm').addEventListener('submit', function (e) {
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.textContent = 'Submitting… / جاري الإرسال…';
+            // let the browser do the real POST; on return we show thanks
+            const done = () => {
+                const card = document.querySelector('.form-card');
+                card.innerHTML = '<h2 style="color:#0074D9">✅ ' +
+                    'Thank you! / شكرًا لك!</h2>' +
+                    '<p style="text-align:center;color:#ccc;line-height:1.8">' +
+                    'Your audition was received. Our team will review it and contact you via your social media.<br>' +
+                    'تم استلام طلبك وسيتواصل معك فريقنا عبر وسائل التواصل الاجتماعي.</p>';
+            };
+            // If the server redirects (200), we land back; detect via fetch instead:
+            e.preventDefault();
+            const fd = new FormData(this);
+            fetch('/api/apply', { method: 'POST', body: fd })
+                .then(r => r.json())
+                .then(j => { if (j.ok) done(); else alert(j.error || 'Error'); btn.disabled = false; btn.textContent = 'Submit Audition Application / إرسال طلب الاختبار'; })
+                .catch(() => { alert('Network error — please try again'); btn.disabled = false; btn.textContent = 'Submit Audition Application / إرسال طلب الاختبار'; });
+        });
+
+        // ---- Mark active nav link ----
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('nav a').forEach(function (a) {
+                if (a.getAttribute('href') === 'apply.html') a.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
